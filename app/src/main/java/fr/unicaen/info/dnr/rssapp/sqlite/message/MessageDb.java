@@ -1,4 +1,4 @@
-package fr.unicaen.info.dnr.rssapp.sqlite;
+package fr.unicaen.info.dnr.rssapp.sqlite.message;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -7,32 +7,46 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.unicaen.info.dnr.rssapp.fr.unicaen.info.dnr.rssapp.entity.Message;
+import fr.unicaen.info.dnr.rssapp.entity.Message;
+
 
 /**
  * Created by lenaic on 11/01/2017.
  */
 
+
 public final class MessageDb {
 
-    public static void add(SQLiteDatabase db, String message, String date) {
-        // Create a new map of values, where column names are the keys
+    /**
+     * Create a new message in our database.
+     * @param db : database.
+     * @param message : Object Message.
+     */
+    public static void add(SQLiteDatabase db, Message message) {
         ContentValues values = new ContentValues();
-        values.put(MessageDbOperation.FeedEntry.COLUMN_NAME_TEXT, message);
-        values.put(MessageDbOperation.FeedEntry.COLUMN_NAME_DATE, date);
+        values.put(MessageDbOperation.FeedEntry.COLUMN_NAME_TEXT, message.getMessage());
+        values.put(MessageDbOperation.FeedEntry.COLUMN_NAME_DATE, message.getDate());
 
-        // Insert the new row, returning the primary key value of the new row
         db.insert(MessageDbOperation.FeedEntry.TABLE_NAME, null, values);
     }
 
+    /**
+     * Delete a message using an id in our database.
+     * @param db : database.
+     * @param id : message identifier.
+     */
     public static void delete(SQLiteDatabase db, long id) {
         String selection = MessageDbOperation.FeedEntry._ID + " LIKE ?";
-        // Specify arguments in placeholder order.
         String[] selectionArgs = { id+"" };
-        // Issue SQL statement.
         db.delete(MessageDbOperation.FeedEntry.TABLE_NAME, selection, selectionArgs);
     }
 
+    /**
+     * List all the messages from our database.
+     * @param db : database.
+     * @param args : arguments from the where clause.
+     * @return List of Object Message.
+     */
     public static List get(SQLiteDatabase db, String[] args) {
         String[] projection = {
                 MessageDbOperation.FeedEntry._ID,
@@ -40,10 +54,8 @@ public final class MessageDb {
                 MessageDbOperation.FeedEntry.COLUMN_NAME_DATE
         };
 
-        // Filter results WHERE "title" = 'My Title'
         String selection = MessageDbOperation.FeedEntry.COLUMN_NAME_TEXT + " = ? AND " + MessageDbOperation.FeedEntry.COLUMN_NAME_DATE + " = ?";
 
-        // How you want the results sorted in the resulting Cursor
         String sortOrder =
                 MessageDbOperation.FeedEntry.COLUMN_NAME_DATE + " DESC";
 

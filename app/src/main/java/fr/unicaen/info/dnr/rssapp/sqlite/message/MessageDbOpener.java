@@ -1,4 +1,4 @@
-package fr.unicaen.info.dnr.rssapp.sqlite;
+package fr.unicaen.info.dnr.rssapp.sqlite.message;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

@@ -11,9 +11,9 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.unicaen.info.dnr.rssapp.fr.unicaen.info.dnr.rssapp.entity.Message;
-import fr.unicaen.info.dnr.rssapp.sqlite.MessageDb;
-import fr.unicaen.info.dnr.rssapp.sqlite.MessageDbOpener;
+import fr.unicaen.info.dnr.rssapp.entity.Message;
+import fr.unicaen.info.dnr.rssapp.sqlite.message.MessageDb;
+import fr.unicaen.info.dnr.rssapp.sqlite.message.MessageDbOpener;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,8 +29,6 @@ public class MainActivity extends AppCompatActivity {
         // Gets the data repository in write mode
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
-        MessageDb.add(db,"toto","19 janvier 2017");
-
         // MessageDb.delete(db,2);
 
         String[] args = { "toto", "19 janvier 2017" };
@@ -40,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
 
         List messages = MessageDb.get(db,args);
         for ( int i = 0; i < rssItems.length; i++) {
-            Log.d("Message : " + i,messages.get(i).toString());
             Message message = (Message)messages.get(i);
             rssItems[i] = messages.get(i).toString();
         }

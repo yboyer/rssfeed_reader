@@ -1,4 +1,4 @@
-package fr.unicaen.info.dnr.rssapp.fr.unicaen.info.dnr.rssapp.entity;
+package fr.unicaen.info.dnr.rssapp.entity;
 
 /**
  * Created by lenaic on 19/01/2017.
