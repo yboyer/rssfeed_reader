@@ -10,7 +10,6 @@ import java.util.List;
 
 import fr.unicaen.info.dnr.rssapp.sqlite.MessageDb;
 import fr.unicaen.info.dnr.rssapp.sqlite.MessageDbOpener;
-import fr.unicaen.info.dnr.rssapp.sqlite.MessageDbOperation;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
         MessageDb.add(db,"toto","19 janvier 2017");
 
-        MessageDb.delete(db,2);
+        // MessageDb.delete(db,2);
 
         String[] args = { "toto", "19 janvier 2017" };
 

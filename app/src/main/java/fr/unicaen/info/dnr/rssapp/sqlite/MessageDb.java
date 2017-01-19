@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.unicaen.info.dnr.rssapp.fr.unicaen.info.dnr.rssapp.entity.Message;
+
 /**
  * Created by lenaic on 11/01/2017.
  */
