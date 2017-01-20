@@ -1,16 +1,18 @@
 package fr.unicaen.info.dnr.rssapp.entity;
 
+import java.util.Date;
+
 /**
  * Created by lenaic on 19/01/2017.
  */
 
-public class Message {
+public class RSSItem {
 
-    long id;
-    String message;
-    String date;
+    private long id;
+    private String message;
+    private String date;
 
-    public Message(long id, String message, String date) {
+    public RSSItem(long id, String message, String date) {
         this.id = id;
         this.message = message;
         this.date = date;

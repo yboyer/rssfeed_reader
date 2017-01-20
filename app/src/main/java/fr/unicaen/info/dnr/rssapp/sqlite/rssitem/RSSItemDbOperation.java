@@ -1,12 +1,11 @@
-package fr.unicaen.info.dnr.rssapp.sqlite.message;
+package fr.unicaen.info.dnr.rssapp.sqlite.rssitem;
 
 import android.provider.BaseColumns;
 
 /**
  * Created by lenaic on 11/01/2017.
  */
-
-public class MessageDbOperation {
+public class RSSItemDbOperation {
 
     public static String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + FeedEntry.TABLE_NAME + " (" +

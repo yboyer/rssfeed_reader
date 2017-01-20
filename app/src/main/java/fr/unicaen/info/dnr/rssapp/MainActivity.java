@@ -1,19 +1,18 @@
 package fr.unicaen.info.dnr.rssapp;
 
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
-import java.util.ArrayList;
 import java.util.List;
+import fr.unicaen.info.dnr.rssapp.entity.RSSItem;
+import fr.unicaen.info.dnr.rssapp.sqlite.rssitem.RSSItemDb;
+import fr.unicaen.info.dnr.rssapp.sqlite.rssitem.RSSItemDbOpener;
 
-import fr.unicaen.info.dnr.rssapp.entity.Message;
-import fr.unicaen.info.dnr.rssapp.sqlite.message.MessageDb;
-import fr.unicaen.info.dnr.rssapp.sqlite.message.MessageDbOpener;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,21 +23,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        MessageDbOpener mDbHelper = new MessageDbOpener(this);
+        RSSItemDbOpener mDbHelper = new RSSItemDbOpener(this);
 
         // Gets the data repository in write mode
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
-        // MessageDb.delete(db,2);
+        // RSSItemDb.delete(db,2);
 
         String[] args = { "toto", "19 janvier 2017" };
 
         rssList = (ListView) findViewById(R.id.rssList);
         String[] rssItems = new String[10];
 
-        List messages = MessageDb.get(db,args);
+        List messages = RSSItemDb.get(db,args);
         for ( int i = 0; i < rssItems.length; i++) {
-            Message message = (Message)messages.get(i);
+            RSSItem message = (RSSItem)messages.get(i);
             rssItems[i] = messages.get(i).toString();
         }
 
@@ -47,8 +46,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_add:
+                startActivity(new Intent(this, AddActivity.class));
+                return true;
+            case R.id.menu_show_list:
+                // TODO: show the Feed list
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 }
