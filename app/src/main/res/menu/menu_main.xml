@@ -3,18 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:visible="true"
-        android:enabled="true"
-        android:icon="@drawable/ic_art_track_white_24dp"
-        app:showAsAction="always"
-        android:title="@string/show_rss_list"
-        android:id="@+id/menu_show_list" />
-    <item
         android:id="@+id/menu_add"
         android:icon="@drawable/ic_playlist_add_white_24dp"
         android:visible="true"
         android:enabled="true"
         android:checkable="false"
-        android:title="@string/add_title"
+        android:title="@string/addFeed"
         app:showAsAction="ifRoom" />
+
 </menu>

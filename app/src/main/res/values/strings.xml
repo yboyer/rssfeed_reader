@@ -1,12 +1,16 @@
 <resources>
     <string name="app_name">RSS Feed Reader</string>
     <string name="rss_link">RSS Links</string>
-    <string name="add_title">Add link</string>
+    <string name="addFeed">Add a feed</string>
     <string name="add_rss_link">Add RSS link</string>
-    <string name="url">URL</string>
-    <string name="exemple_url">http://exemple.com</string>
-    <string name="save_url">Save</string>
+    <string name="url" translatable="false">URL</string>
+    <string name="exemple_url" translatable="false">http://example.com</string>
+    <string name="save">Save</string>
     <string name="show_rss_list">Show RSS list</string>
     <string name="name">Name</string>
-    <string name="exemple">Exemple</string>
+    <string name="exemple" translatable="false">Example</string>
+    <string name="enterName">Enter the name</string>
+    <string name="EnterUrl">Enter the URL</string>
+    <string name="feedAdress">Feed URL</string>
+    <string name="feedName">Feed name</string>
 </resources>
