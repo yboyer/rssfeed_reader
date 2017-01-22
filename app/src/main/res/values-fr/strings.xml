@@ -5,11 +5,12 @@
     <string name="addFeed">Ajouter un flux</string>
     <string name="add_rss_link">Ajouter un flux RSS</string>
     <string name="enterName">Saisissez le nom</string>
-    <string name="exemple"></string>
     <string name="name">Nom</string>
     <string name="rss_link">Flux RSS</string>
     <string name="save">Enregistrer</string>
     <string name="show_rss_list">Afficher la liste des flux</string>
     <string name="feedAdress">Adresse du flux</string>
     <string name="feedName">Nom du flux</string>
+    <string name="error">Erreur</string>
+    <string name="checking">Vérification du lien. Veuillez patienter...</string>
 </resources>

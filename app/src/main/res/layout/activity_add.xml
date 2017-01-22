@@ -26,7 +26,7 @@
         android:layout_below="@+id/textViewName"
         android:layout_alignParentStart="true"
         android:id="@+id/editTextName"
-        android:hint="@string/exemple"
+        android:hint="string/exemple"
         android:maxLines="1" />
 
     <TextView
@@ -47,7 +47,7 @@
         android:layout_alignParentStart="true"
         android:id="@+id/editTextUrl"
         android:layout_alignParentEnd="true"
-        android:hint="@string/exemple_url"
+        android:hint="string/exemple_url"
         android:maxLines="1" />
 
 </RelativeLayout>

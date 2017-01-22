@@ -1,0 +1,91 @@
+package fr.unicaen.info.dnr.rssapp.manager;
+
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
+import java.util.List;
+import fr.unicaen.info.dnr.rssapp.R;
+import fr.unicaen.info.dnr.rssapp.entity.*; // RSSItem, RSSFeed
+import fr.unicaen.info.dnr.rssapp.sqlite.rssfeed.*; // RSSFeedDb, RSSFeedDbOpener
+import fr.unicaen.info.dnr.rssapp.sqlite.rssitem.*; // RSSItemDb, RSSItemDbOpener
+
+/**
+ * Represents an entry manager.
+ */
+public class EntryManager {
+    private final Context context;
+    private ProgressDialog loading;
+
+    public EntryManager(Context context) {
+        this.context = context;
+    }
+
+    /**
+     * Display the loading dialog
+     */
+    private void showLoading() {
+        this.loading = new ProgressDialog(this.context);
+        this.loading.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        this.loading.setMessage(this.context.getResources().getString(R.string.checking));
+        this.loading.setIndeterminate(true);
+        this.loading.setCancelable(false);
+        this.loading.show();
+    }
+
+    /**
+     * Close the loading dialog
+     */
+    private void closeLoading() {
+        this.loading.dismiss();
+    }
+
+    /**
+     * Add a feed and its items on database
+     * @param rssFeed The RSS feed
+     */
+    public void add(final RSSFeed rssFeed) {
+        showLoading();
+
+        // Add the feed item on database
+        final SQLiteDatabase feedDB = new RSSFeedDbOpener(this.context).getWritableDatabase();
+        RSSFeedDb.add(feedDB, rssFeed);
+
+        // For the future uses
+        final Context context = this.context;
+
+        // Async retrieve
+        new RetrieveFeedTask(new RetrieveFeedTask.AsyncResponse(){
+            @Override
+            public void processFinish(org.mcsoxford.rss.RSSFeed feed, Exception e){
+                closeLoading();
+
+                if (e != null) {
+                    // Display the exception as an error
+                    new AlertDialog.Builder(context)
+                        .setTitle(R.string.error)
+                        .setMessage(e.getMessage())
+                        .setPositiveButton(android.R.string.ok, null)
+                        .show();
+                    return;
+                }
+
+                List<org.mcsoxford.rss.RSSItem> list = feed.getItems();
+                Log.d("## EntryManager:add", rssFeed.getUrl() + " have " + list.size() + " items");
+
+                // Add feed items on database
+                final SQLiteDatabase itemDB = new RSSItemDbOpener(context).getWritableDatabase();
+                for (org.mcsoxford.rss.RSSItem item : list) {
+                    RSSItem rssItem = new RSSItem()
+                        .setLink(item.getLink().toString())
+                        .setDescription(item.getDescription())
+                        .setContent(item.getContent())
+                        .setPubDate(item.getPubDate());
+
+                    RSSItemDb.add(itemDB, rssItem);
+                }
+            }
+        }).execute(rssFeed);
+    }
+}

@@ -1,36 +1,91 @@
 package fr.unicaen.info.dnr.rssapp.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * Created by lenaic on 19/01/2017.
+ * Represents an RSS feed.
  */
-
 public class RSSFeed {
-
     private long id;
-    private String link;
+    private String name;
+    private String url;
 
-    public RSSFeed(long id, String link) {
+
+    public RSSFeed(long id, String name, String url) {
         this.id = id;
-        this.link = link;
+        this.name = name;
+        this.url = url;
     }
 
+    public RSSFeed(String name, String url) {
+        this(-1, name, url);
+    }
+
+    /**
+     * get the id
+     * @return the id
+     */
     public long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    /**
+     * Set the id
+     * @param id The id
+     * @return This
+     */
+    public RSSFeed setId(long id) {
         this.id = id;
+        return this;
     }
 
-    public String getLink() {
-        return link;
+    /**
+     * Get the name
+     * @return The name
+     */
+    public String getName() {
+        return name;
     }
 
-    public void setLink(String link) {
-        this.link = link;
+    /**
+     * Set the name
+     * @param name The name
+     * @return This
+     */
+    public RSSFeed setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the URL
+     * @return The URL
+     */
+    public String getUrl() {
+        return url;
+    }
+
+    /**
+     * Set the URL
+     * @param url The URL
+     * @return This
+     */
+    public RSSFeed setUrl(String url) {
+        this.url = url;
+        return this;
+    }
+
+    public List<RSSItem> getItems() {
+        // TODO: getItems
+        return new ArrayList<RSSItem>();
     }
 
     public String toString() {
-        return "id : " + this.getId() + " lien : " + this.getLink();
+        return "{\n" +
+            "  \"id\":\"" + this.getId() + "\",\n" +
+            "  \"name\":\"" + this.getName() + "\",\n" +
+            "  \"url\":\"" + this.getUrl() + "\"\n" +
+            "}";
     }
 }

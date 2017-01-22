@@ -4,13 +4,13 @@
     <string name="addFeed">Add a feed</string>
     <string name="add_rss_link">Add RSS link</string>
     <string name="url" translatable="false">URL</string>
-    <string name="exemple_url" translatable="false">http://example.com</string>
     <string name="save">Save</string>
     <string name="show_rss_list">Show RSS list</string>
     <string name="name">Name</string>
-    <string name="exemple" translatable="false">Example</string>
     <string name="enterName">Enter the name</string>
     <string name="EnterUrl">Enter the URL</string>
     <string name="feedAdress">Feed URL</string>
     <string name="feedName">Feed name</string>
+    <string name="error">Error</string>
+    <string name="checking">Checking. Please wait…</string>
 </resources>

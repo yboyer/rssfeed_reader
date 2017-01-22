@@ -1,9 +1,7 @@
 package fr.unicaen.info.dnr.rssapp;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,7 +15,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.util.Patterns;
 import java.util.List;
+import fr.unicaen.info.dnr.rssapp.entity.RSSFeed;
 import fr.unicaen.info.dnr.rssapp.entity.RSSItem;
+import fr.unicaen.info.dnr.rssapp.manager.EntryManager;
 import fr.unicaen.info.dnr.rssapp.sqlite.rssitem.RSSItemDb;
 import fr.unicaen.info.dnr.rssapp.sqlite.rssitem.RSSItemDbOpener;
 
@@ -64,7 +64,11 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Display the adding feed dialog
+     */
     private void openAddFeedDialogBox() {
+        // Get the dialog layout
         View promptView = this.getLayoutInflater().inflate(R.layout.dialog_signin, null);
 
         final EditText dialogFeedName = (EditText) promptView.findViewById(R.id.dialogFeedName);
@@ -80,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                 boolean dialogFeedNameValid = dialogFeedName.getText().length() != 0;
                 boolean dialogFeedUrlValid = Patterns.WEB_URL.matcher(dialogFeedUrl.getText()).matches();
 
-                // Disable the positive button if the input are invalid
+                // Disable the positive button if inputs are invalid
                 addFeedDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(dialogFeedNameValid && dialogFeedUrlValid);
             }
         };
@@ -88,18 +92,26 @@ public class MainActivity extends AppCompatActivity {
         dialogFeedUrl.addTextChangedListener(textWatcher);
 
         // Create the dialog
+        final MainActivity main = this;
         final AlertDialog.Builder addFeedBuilder = new AlertDialog.Builder(this);
         addFeedBuilder.setTitle(R.string.addFeed);
         addFeedBuilder.setView(promptView)
             .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int id) {
-                    // TODO: add in db
+                    String name = dialogFeedName.getText().toString();
+                    String url = dialogFeedUrl.getText().toString();
+
+                    // Add http if the url does not contains it
+                    if (!url.startsWith("http")) {
+                        url = "http://" + url;
+                    }
+
+                    // Add the feed on database
+                    new EntryManager(main).add(new RSSFeed(name, url));
                 }
             })
-            .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) { }
-            });
+            .setNegativeButton(android.R.string.cancel, null);
         addFeedDialog = addFeedBuilder.create();
 
         addFeedDialog.show();

@@ -11,8 +11,6 @@ import fr.unicaen.info.dnr.rssapp.entity.RSSItem;
 /**
  * Created by lenaic on 11/01/2017.
  */
-
-
 public final class RSSItemDb {
 
     /**
@@ -22,10 +20,10 @@ public final class RSSItemDb {
      */
     public static void add(SQLiteDatabase db, RSSItem item) {
         ContentValues values = new ContentValues();
-        values.put(RSSItemDbOperation.FeedEntry.COLUMN_NAME_TEXT, item.getMessage());
-        values.put(RSSItemDbOperation.FeedEntry.COLUMN_NAME_DATE, item.getDate());
+        //values.put(RSSItemDbOperation.FeedEntry.COLUMN_NAME_TEXT, item.getMessage());
+        //values.put(RSSItemDbOperation.FeedEntry.COLUMN_NAME_DATE, item.getDate());
 
-        db.insert(RSSItemDbOperation.FeedEntry.TABLE_NAME, null, values);
+        // db.insert(RSSItemDbOperation.FeedEntry.TABLE_NAME, null, values);
     }
 
     /**
@@ -69,12 +67,11 @@ public final class RSSItemDb {
 
         List itemIds = new ArrayList();
         while(cursor.moveToNext()) {
-            long rssItemId = cursor.getLong(
-                    cursor.getColumnIndexOrThrow(RSSItemDbOperation.FeedEntry._ID));
-            String rssItemText = cursor.getString(cursor.getColumnIndexOrThrow(RSSItemDbOperation.FeedEntry.COLUMN_NAME_TEXT));
-            String rssItemDate = cursor.getString(cursor.getColumnIndexOrThrow(RSSItemDbOperation.FeedEntry.COLUMN_NAME_DATE));
-            RSSItem rssItem = new RSSItem(rssItemId, rssItemText, rssItemDate);
-            itemIds.add(rssItem);
+            // long rssItemId = cursor.getLong(cursor.getColumnIndexOrThrow(RSSItemDbOperation.FeedEntry._ID));
+            // String rssItemText = cursor.getString(cursor.getColumnIndexOrThrow(RSSItemDbOperation.FeedEntry.COLUMN_NAME_TEXT));
+            // String rssItemDate = cursor.getString(cursor.getColumnIndexOrThrow(RSSItemDbOperation.FeedEntry.COLUMN_NAME_DATE));
+            // RSSItem rssItem = new RSSItem(rssItemId, rssItemText, rssItemDate);
+            // itemIds.add(rssItem);
         }
         cursor.close();
 
