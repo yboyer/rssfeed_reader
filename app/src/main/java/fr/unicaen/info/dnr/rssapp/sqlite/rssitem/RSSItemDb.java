@@ -20,10 +20,10 @@ public final class RSSItemDb {
      */
     public static void add(SQLiteDatabase db, RSSItem item) {
         ContentValues values = new ContentValues();
-        //values.put(RSSItemDbOperation.FeedEntry.COLUMN_NAME_TEXT, item.getMessage());
-        //values.put(RSSItemDbOperation.FeedEntry.COLUMN_NAME_DATE, item.getDate());
+        //values.put(RSSItemDbOperation.ItemEntry.COLUMN_NAME_TEXT, item.getMessage());
+        //values.put(RSSItemDbOperation.ItemEntry.COLUMN_NAME_DATE, item.getDate());
 
-        // db.insert(RSSItemDbOperation.FeedEntry.TABLE_NAME, null, values);
+        // db.insert(RSSItemDbOperation.ItemEntry.TABLE_NAME, null, values);
     }
 
     /**
@@ -32,9 +32,9 @@ public final class RSSItemDb {
      * @param id : item identifier.
      */
     public static void delete(SQLiteDatabase db, long id) {
-        String selection = RSSItemDbOperation.FeedEntry._ID + " LIKE ?";
+        String selection = RSSItemDbOperation.ItemEntry._ID + " LIKE ?";
         String[] selectionArgs = { id+"" };
-        db.delete(RSSItemDbOperation.FeedEntry.TABLE_NAME, selection, selectionArgs);
+        db.delete(RSSItemDbOperation.ItemEntry.TABLE_NAME, selection, selectionArgs);
     }
 
     /**
@@ -44,37 +44,38 @@ public final class RSSItemDb {
      * @return List of Object RSSItem.
      */
     public static List get(SQLiteDatabase db, String[] args) {
-        String[] projection = {
-                RSSItemDbOperation.FeedEntry._ID,
-                RSSItemDbOperation.FeedEntry.COLUMN_NAME_TEXT,
-                RSSItemDbOperation.FeedEntry.COLUMN_NAME_DATE
-        };
-
-        String selection = RSSItemDbOperation.FeedEntry.COLUMN_NAME_TEXT + " = ? AND " + RSSItemDbOperation.FeedEntry.COLUMN_NAME_DATE + " = ?";
-
-        String sortOrder =
-                RSSItemDbOperation.FeedEntry.COLUMN_NAME_DATE + " DESC";
-
-        Cursor cursor = db.query(
-                RSSItemDbOperation.FeedEntry.TABLE_NAME,                     // The table to query
-                projection,                               // The columns to return
-                selection,                                // The columns for the WHERE clause
-                args,                            // The values for the WHERE clause
-                null,                                     // don't group the rows
-                null,                                     // don't filter by row groups
-                sortOrder                                 // The sort order
-        );
-
+        // TODO
+        // String[] projection = {
+        //         RSSItemDbOperation.ItemEntry._ID,
+        //         RSSItemDbOperation.ItemEntry.COLUMN_NAME_TEXT,
+        //         RSSItemDbOperation.ItemEntry.COLUMN_NAME_DATE
+        // };
+        //
+        // String selection = RSSItemDbOperation.ItemEntry.COLUMN_NAME_TEXT + " = ? AND " + RSSItemDbOperation.ItemEntry.COLUMN_NAME_DATE + " = ?";
+        //
+        // String sortOrder =
+        //         RSSItemDbOperation.ItemEntry.COLUMN_NAME_DATE + " DESC";
+        //
+        // Cursor cursor = db.query(
+        //         RSSItemDbOperation.ItemEntry.TABLE_NAME,                     // The table to query
+        //         projection,                               // The columns to return
+        //         selection,                                // The columns for the WHERE clause
+        //         args,                            // The values for the WHERE clause
+        //         null,                                     // don't group the rows
+        //         null,                                     // don't filter by row groups
+        //         sortOrder                                 // The sort order
+        // );
+        //
         List itemIds = new ArrayList();
-        while(cursor.moveToNext()) {
-            // long rssItemId = cursor.getLong(cursor.getColumnIndexOrThrow(RSSItemDbOperation.FeedEntry._ID));
-            // String rssItemText = cursor.getString(cursor.getColumnIndexOrThrow(RSSItemDbOperation.FeedEntry.COLUMN_NAME_TEXT));
-            // String rssItemDate = cursor.getString(cursor.getColumnIndexOrThrow(RSSItemDbOperation.FeedEntry.COLUMN_NAME_DATE));
-            // RSSItem rssItem = new RSSItem(rssItemId, rssItemText, rssItemDate);
-            // itemIds.add(rssItem);
-        }
-        cursor.close();
-
+        // while(cursor.moveToNext()) {
+        //     // long rssItemId = cursor.getLong(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry._ID));
+        //     // String rssItemText = cursor.getString(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry.COLUMN_NAME_TEXT));
+        //     // String rssItemDate = cursor.getString(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry.COLUMN_NAME_DATE));
+        //     // RSSItem rssItem = new RSSItem(rssItemId, rssItemText, rssItemDate);
+        //     // itemIds.add(rssItem);
+        // }
+        // cursor.close();
+        //
         return itemIds;
     }
 

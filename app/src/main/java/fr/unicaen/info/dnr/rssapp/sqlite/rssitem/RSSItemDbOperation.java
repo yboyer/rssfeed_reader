@@ -8,18 +8,18 @@ import android.provider.BaseColumns;
 public class RSSItemDbOperation {
 
     public static String SQL_CREATE_ENTRIES =
-        "CREATE TABLE " + FeedEntry.TABLE_NAME + " (" +
-            FeedEntry._ID + " INTEGER PRIMARY KEY," +
-            FeedEntry.COLUMN_NAME_CONTENT + "TEXT," +
-            FeedEntry.COLUMN_NAME_DESCRIPTION + "TEXT," +
-            FeedEntry.COLUMN_NAME_LINK + "TEXT," +
-            FeedEntry.COLUMN_NAME_PUBDATE + "TEXT" +
+        "CREATE TABLE " + ItemEntry.TABLE_NAME + " (" +
+            ItemEntry._ID + " INTEGER PRIMARY KEY," +
+            ItemEntry.COLUMN_NAME_CONTENT + "TEXT," +
+            ItemEntry.COLUMN_NAME_DESCRIPTION + "TEXT," +
+            ItemEntry.COLUMN_NAME_LINK + "TEXT," +
+            ItemEntry.COLUMN_NAME_PUBDATE + "TEXT" +
         ")";
 
     public static String SQL_DELETE_ENTRIES =
-        "DROP TABLE IF EXISTS " + FeedEntry.TABLE_NAME;
+        "DROP TABLE IF EXISTS " + ItemEntry.TABLE_NAME;
 
-    public static class FeedEntry implements BaseColumns {
+    public static class ItemEntry implements BaseColumns {
         public static final String TABLE_NAME = "rssitem";
         public static final String COLUMN_NAME_CONTENT = "content";
         public static final String COLUMN_NAME_DESCRIPTION = "description";
