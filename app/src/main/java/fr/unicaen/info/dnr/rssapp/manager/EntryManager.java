@@ -42,6 +42,19 @@ public class EntryManager {
     }
 
     /**
+     * Get a complete feed
+     * @param feedEntry The feed to retrieve
+     * @return The completed feed
+     */
+    public RSSFeed getFeed(RSSFeed feedEntry) {
+        final SQLiteDatabase feedDB = new RSSItemDbOpener(this.context).getWritableDatabase();
+        List<RSSItem> list = RSSFeedDb.getItems(feedDB, feedEntry);
+        feedEntry.setItems(list);
+
+        return feedEntry;
+    }
+
+    /**
      * Clean the database
      */
     public void clean() {

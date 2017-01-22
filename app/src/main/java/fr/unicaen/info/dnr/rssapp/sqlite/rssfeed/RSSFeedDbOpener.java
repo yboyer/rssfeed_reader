@@ -8,7 +8,6 @@ import android.util.Log;
 /**
  * Created by lenaic on 11/01/2017.
  */
-
 public class RSSFeedDbOpener extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
