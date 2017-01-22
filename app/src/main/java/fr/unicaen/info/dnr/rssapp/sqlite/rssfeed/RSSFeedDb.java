@@ -55,7 +55,7 @@ public final class RSSFeedDb {
                 RSSFeedDbOperation.FeedEntry.COLUMN_NAME_URL,
         };
 
-        String selection = RSSFeedDbOperation.FeedEntry.COLUMN_NAME_URL + " = ?";
+        String selection = RSSFeedDbOperation.FeedEntry.COLUMN_NAME_NAME + " = ? AND "+ RSSFeedDbOperation.FeedEntry.COLUMN_NAME_URL + " = ? OR 1 = 1";
 
         String sortOrder =
                 RSSFeedDbOperation.FeedEntry.COLUMN_NAME_URL + " ASC";

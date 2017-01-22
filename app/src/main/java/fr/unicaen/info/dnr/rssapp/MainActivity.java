@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +18,8 @@ import android.util.Patterns;
 import java.util.List;
 import fr.unicaen.info.dnr.rssapp.entity.RSSFeed;
 import fr.unicaen.info.dnr.rssapp.manager.EntryManager;
+import fr.unicaen.info.dnr.rssapp.sqlite.rssfeed.RSSFeedDb;
+import fr.unicaen.info.dnr.rssapp.sqlite.rssfeed.RSSFeedDbOpener;
 import fr.unicaen.info.dnr.rssapp.sqlite.rssitem.RSSItemDb;
 import fr.unicaen.info.dnr.rssapp.sqlite.rssitem.RSSItemDbOpener;
 
@@ -35,18 +38,15 @@ public class MainActivity extends AppCompatActivity {
 
         // TODO: use the EntryManager
         // Gets the data repository in write mode
-        SQLiteDatabase db = new RSSItemDbOpener(this).getWritableDatabase();
-
-        String[] args = { "toto", "19 janvier 2017" };
 
         rssList = (ListView) findViewById(R.id.rssList);
-        List messages = RSSItemDb.get(db,args);
-        String[] rssItems = new String[messages.size()];
-        for ( int i = 0; i < messages.size(); i++) {
-            rssItems[i] = messages.get(i).toString();
+        List links = new EntryManager(this).getFeed();
+        String[] rssLinks = new String[links.size()];
+        for ( int i = 0; i < links.size(); i++) {
+            rssLinks[i] = links.get(i).toString();
         }
 
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,rssItems);
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,rssLinks);
         rssList.setAdapter(adapter);
     }
 

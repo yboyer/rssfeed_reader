@@ -62,6 +62,13 @@ public class EntryManager {
         add(new RSSFeed("Korben", "http://korben.info/feed"));
     }
 
+    public List getFeed() {
+        SQLiteDatabase db = new RSSFeedDbOpener(this.context).getWritableDatabase();
+        String[] args = { "", "" };
+        List links = RSSFeedDb.get(db,args);
+        return links;
+    }
+
     /**
      * Add a feed and its items on database
      * @param rssFeed The RSS feed
