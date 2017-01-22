@@ -58,11 +58,12 @@ public class EntryManager {
      * Clean the database
      */
     public void clean() {
+
         SQLiteDatabase itemDB = new RSSItemDbOpener(this.context).getWritableDatabase();
         itemDB.execSQL(RSSItemDbOperation.SQL_DELETE_ENTRIES);
         itemDB.execSQL(RSSItemDbOperation.SQL_CREATE_ENTRIES);
 
-        SQLiteDatabase feedDB = new RSSItemDbOpener(this.context).getWritableDatabase();
+        SQLiteDatabase feedDB = new RSSFeedDbOpener(this.context).getWritableDatabase();
         feedDB.execSQL(RSSFeedDbOperation.SQL_DELETE_ENTRIES);
         feedDB.execSQL(RSSFeedDbOperation.SQL_CREATE_ENTRIES);
     }
