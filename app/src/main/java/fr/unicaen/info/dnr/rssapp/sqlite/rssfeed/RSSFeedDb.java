@@ -3,6 +3,7 @@ package fr.unicaen.info.dnr.rssapp.sqlite.rssfeed;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 import fr.unicaen.info.dnr.rssapp.entity.RSSFeed;
@@ -17,12 +18,16 @@ public final class RSSFeedDb {
      * Create a new link from an RSSFeed in our database.
      * @param db : database.
      * @param item : Object RSSFeed.
+     * @return The inserted id
      */
-    public static void add(SQLiteDatabase db, RSSFeed item) {
-        // ContentValues values = new ContentValues();
-        // values.put(RSSFeedDbOperation.FeedEntry.COLUMN_NAME_LINK, link.getUrl());
+    public static long add(SQLiteDatabase db, RSSFeed item) {
+        ContentValues values = new ContentValues();
+        values.put(RSSFeedDbOperation.FeedEntry.COLUMN_NAME_NAME, item.getName());
+        values.put(RSSFeedDbOperation.FeedEntry.COLUMN_NAME_URL, item.getUrl());
 
-        // db.insert(RSSFeedDbOperation.FeedEntry.TABLE_NAME, null, values);
+        Log.d("RSSFeedDb:adding", item.toString());
+
+        return db.insert(RSSFeedDbOperation.FeedEntry.TABLE_NAME, null, values);
     }
 
     /**
@@ -43,8 +48,10 @@ public final class RSSFeedDb {
      * @return List of Object RSSFeed.
      */
     public static List get(SQLiteDatabase db, String[] args) {
+        // TODO: get by id instead of url
         String[] projection = {
                 RSSFeedDbOperation.FeedEntry._ID,
+                RSSFeedDbOperation.FeedEntry.COLUMN_NAME_NAME,
                 RSSFeedDbOperation.FeedEntry.COLUMN_NAME_URL,
         };
 
@@ -64,11 +71,12 @@ public final class RSSFeedDb {
         );
 
         List feed = new ArrayList();
-        while(cursor.moveToNext()) {
-            // long linkId = cursor.getLong(cursor.getColumnIndexOrThrow(RSSFeedDbOperation.FeedEntry._ID));
-            // String linkText = cursor.getString(cursor.getColumnIndexOrThrow(RSSFeedDbOperation.FeedEntry.COLUMN_NAME_LINK));
-            //RSSFeed link = new RSSFeed(linkId,linkText);
-            //feed.add(link);
+        while (cursor.moveToNext()) {
+            long id = cursor.getLong(cursor.getColumnIndexOrThrow(RSSFeedDbOperation.FeedEntry._ID));
+            String name = cursor.getString(cursor.getColumnIndexOrThrow(RSSFeedDbOperation.FeedEntry.COLUMN_NAME_NAME));
+            String url = cursor.getString(cursor.getColumnIndexOrThrow(RSSFeedDbOperation.FeedEntry.COLUMN_NAME_URL));
+
+            feed.add(new RSSFeed(id, name, url));
         }
         cursor.close();
 

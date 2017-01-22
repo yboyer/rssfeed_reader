@@ -42,6 +42,27 @@ public class EntryManager {
     }
 
     /**
+     * Clean the database
+     */
+    public void clean() {
+        SQLiteDatabase itemDB = new RSSItemDbOpener(this.context).getWritableDatabase();
+        itemDB.execSQL(RSSItemDbOperation.SQL_DELETE_ENTRIES);
+        itemDB.execSQL(RSSItemDbOperation.SQL_CREATE_ENTRIES);
+
+        SQLiteDatabase feedDB = new RSSItemDbOpener(this.context).getWritableDatabase();
+        feedDB.execSQL(RSSFeedDbOperation.SQL_DELETE_ENTRIES);
+        feedDB.execSQL(RSSFeedDbOperation.SQL_CREATE_ENTRIES);
+    }
+
+    /**
+     * Fill the database with default RSS feeds
+     */
+    public void fill() {
+        clean();
+        add(new RSSFeed("Korben", "http://korben.info/feed"));
+    }
+
+    /**
      * Add a feed and its items on database
      * @param rssFeed The RSS feed
      */
@@ -50,7 +71,7 @@ public class EntryManager {
 
         // Add the feed item on database
         final SQLiteDatabase feedDB = new RSSFeedDbOpener(this.context).getWritableDatabase();
-        RSSFeedDb.add(feedDB, rssFeed);
+        final long feedId = RSSFeedDb.add(feedDB, rssFeed);
 
         // For the future uses
         final Context context = this.context;
@@ -81,7 +102,8 @@ public class EntryManager {
                         .setLink(item.getLink().toString())
                         .setDescription(item.getDescription())
                         .setContent(item.getContent())
-                        .setPubDate(item.getPubDate());
+                        .setPubDate(item.getPubDate())
+                        .setFeedId(feedId);
 
                     RSSItemDb.add(itemDB, rssItem);
                 }

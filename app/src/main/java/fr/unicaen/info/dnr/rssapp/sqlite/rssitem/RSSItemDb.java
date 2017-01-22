@@ -3,6 +3,7 @@ package fr.unicaen.info.dnr.rssapp.sqlite.rssitem;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 import fr.unicaen.info.dnr.rssapp.entity.RSSItem;
@@ -17,13 +18,19 @@ public final class RSSItemDb {
      * Create a new item in our database.
      * @param db : database.
      * @param item : Object Message.
+     * @return The inserted id
      */
-    public static void add(SQLiteDatabase db, RSSItem item) {
+    public static long add(SQLiteDatabase db, RSSItem item) {
         ContentValues values = new ContentValues();
-        //values.put(RSSItemDbOperation.ItemEntry.COLUMN_NAME_TEXT, item.getMessage());
-        //values.put(RSSItemDbOperation.ItemEntry.COLUMN_NAME_DATE, item.getDate());
+        values.put(RSSItemDbOperation.ItemEntry.COLUMN_NAME_DESCRIPTION, item.getDescription());
+        values.put(RSSItemDbOperation.ItemEntry.COLUMN_NAME_CONTENT, item.getContent());
+        values.put(RSSItemDbOperation.ItemEntry.COLUMN_NAME_LINK, item.getLink());
+        values.put(RSSItemDbOperation.ItemEntry.COLUMN_NAME_PUBDATE, item.getStringPubDate());
+        values.put(RSSItemDbOperation.ItemEntry.COLUMN_NAME_FEEDID, item.getFeedId());
 
-        // db.insert(RSSItemDbOperation.ItemEntry.TABLE_NAME, null, values);
+        Log.d("RSSItemDb:adding", item.toString());
+
+        return db.insert(RSSItemDbOperation.ItemEntry.TABLE_NAME, null, values);
     }
 
     /**

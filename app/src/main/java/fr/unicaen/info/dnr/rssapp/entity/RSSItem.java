@@ -14,15 +14,8 @@ public class RSSItem {
     private String content;
     private String description;
     private String link;
+    private long feedId;
 
-
-    public RSSItem(long id, String message, String date) {
-        this.id = id;
-    }
-
-    public RSSItem() {
-        this.id = -1;
-    }
 
     /**
      * Set the id
@@ -121,13 +114,38 @@ public class RSSItem {
     }
 
     /**
-     * Get the publication date
-     * @return The publication date
+     * Get the publication date as a Date
+     * @return The publication date as a Date
      */
     public Date getPubDate() {
         return this.pubDate;
     }
 
+    /**
+     * Get the publication date as a String
+     * @return The publication date as a String
+     */
+    public String getStringPubDate() {
+        return this.dateFormatter.format(this.pubDate);
+    }
+
+    /**
+     * Set the feed id
+     * @param feedId The feed id
+     * @return This
+     */
+    public RSSItem setFeedId(long feedId){
+        this.feedId = feedId;
+        return this;
+    }
+
+    /**
+     * Get the feed id
+     * @return The feed id
+     */
+    public long getFeedId() {
+        return this.feedId;
+    }
 
     public String toString() {
         return "{\n" +
@@ -135,7 +153,8 @@ public class RSSItem {
             "  \"description\":\"" + this.getDescription() + "\",\n" +
             "  \"content\":\"" + this.getContent() + "\",\n" +
             "  \"link\":\"" + this.getLink() + "\",\n" +
-            "  \"pubDate\":\"" + this.getPubDate().toString() + "\"\n" +
+            "  \"pubDate\":\"" + this.getStringPubDate() + "\",\n" +
+            "  \"feedId\":\"" + this.getFeedId() + "\"\n" +
             "}";
     }
 }

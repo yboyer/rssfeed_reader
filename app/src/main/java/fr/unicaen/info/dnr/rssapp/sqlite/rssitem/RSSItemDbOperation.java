@@ -1,6 +1,7 @@
 package fr.unicaen.info.dnr.rssapp.sqlite.rssitem;
 
 import android.provider.BaseColumns;
+import fr.unicaen.info.dnr.rssapp.sqlite.rssfeed.RSSFeedDbOperation;
 
 /**
  * Created by lenaic on 11/01/2017.
@@ -10,10 +11,12 @@ public class RSSItemDbOperation {
     public static String SQL_CREATE_ENTRIES =
         "CREATE TABLE " + ItemEntry.TABLE_NAME + " (" +
             ItemEntry._ID + " INTEGER PRIMARY KEY," +
-            ItemEntry.COLUMN_NAME_CONTENT + "TEXT," +
-            ItemEntry.COLUMN_NAME_DESCRIPTION + "TEXT," +
-            ItemEntry.COLUMN_NAME_LINK + "TEXT," +
-            ItemEntry.COLUMN_NAME_PUBDATE + "TEXT" +
+            ItemEntry.COLUMN_NAME_CONTENT + " TEXT," +
+            ItemEntry.COLUMN_NAME_DESCRIPTION + " TEXT," +
+            ItemEntry.COLUMN_NAME_LINK + " TEXT," +
+            ItemEntry.COLUMN_NAME_PUBDATE + " TEXT," +
+            ItemEntry.COLUMN_NAME_FEEDID + " INTEGER," +
+            "FOREIGN KEY(" + ItemEntry.COLUMN_NAME_FEEDID + ") REFERENCES " + RSSFeedDbOperation.FeedEntry.TABLE_NAME + "(" + RSSFeedDbOperation.FeedEntry._ID + ")" +
         ")";
 
     public static String SQL_DELETE_ENTRIES =
@@ -25,5 +28,6 @@ public class RSSItemDbOperation {
         public static final String COLUMN_NAME_DESCRIPTION = "description";
         public static final String COLUMN_NAME_LINK = "link";
         public static final String COLUMN_NAME_PUBDATE = "pubdate";
+        public static final String COLUMN_NAME_FEEDID = "feedid";
     }
 }

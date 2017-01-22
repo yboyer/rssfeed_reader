@@ -16,7 +16,6 @@ import android.widget.ListView;
 import android.util.Patterns;
 import java.util.List;
 import fr.unicaen.info.dnr.rssapp.entity.RSSFeed;
-import fr.unicaen.info.dnr.rssapp.entity.RSSItem;
 import fr.unicaen.info.dnr.rssapp.manager.EntryManager;
 import fr.unicaen.info.dnr.rssapp.sqlite.rssitem.RSSItemDb;
 import fr.unicaen.info.dnr.rssapp.sqlite.rssitem.RSSItemDbOpener;
@@ -32,21 +31,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RSSItemDbOpener mDbHelper = new RSSItemDbOpener(this);
+        new EntryManager(this).fill();
 
+        // TODO: use the EntryManager
         // Gets the data repository in write mode
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-
-        // RSSItemDb.delete(db,2);
+        SQLiteDatabase db = new RSSItemDbOpener(this).getWritableDatabase();
 
         String[] args = { "toto", "19 janvier 2017" };
 
         rssList = (ListView) findViewById(R.id.rssList);
-        String[] rssItems = new String[10];
-
         List messages = RSSItemDb.get(db,args);
-        for ( int i = 0; i < rssItems.length; i++) {
-            RSSItem message = (RSSItem)messages.get(i);
+        String[] rssItems = new String[messages.size()];
+        for ( int i = 0; i < messages.size(); i++) {
             rssItems[i] = messages.get(i).toString();
         }
 
