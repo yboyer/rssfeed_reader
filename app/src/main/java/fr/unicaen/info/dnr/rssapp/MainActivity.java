@@ -1,27 +1,22 @@
 package fr.unicaen.info.dnr.rssapp;
 
 import android.content.DialogInterface;
-import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
+import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.util.Patterns;
+import java.util.ArrayList;
 import java.util.List;
 import fr.unicaen.info.dnr.rssapp.entity.RSSFeed;
 import fr.unicaen.info.dnr.rssapp.manager.EntryManager;
-import fr.unicaen.info.dnr.rssapp.sqlite.rssfeed.RSSFeedDb;
-import fr.unicaen.info.dnr.rssapp.sqlite.rssfeed.RSSFeedDbOpener;
-import fr.unicaen.info.dnr.rssapp.sqlite.rssitem.RSSItemDb;
-import fr.unicaen.info.dnr.rssapp.sqlite.rssitem.RSSItemDbOpener;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -36,17 +31,15 @@ public class MainActivity extends AppCompatActivity {
 
         new EntryManager(this).fill();
 
-        // TODO: use the EntryManager
-        // Gets the data repository in write mode
-
-        rssList = (ListView) findViewById(R.id.rssList);
-        List links = new EntryManager(this).getFeed();
-        String[] rssLinks = new String[links.size()];
-        for ( int i = 0; i < links.size(); i++) {
-            rssLinks[i] = links.get(i).toString();
+        List<RSSFeed> links = new EntryManager(this).getFeeds();
+        List<String> rssLinks = new ArrayList<String>();
+        for (RSSFeed feed : links) {
+            // TODO: improve the display
+            rssLinks.add(feed.toString());
         }
 
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,rssLinks);
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, rssLinks);
+        rssList = (ListView) findViewById(R.id.rssList);
         rssList.setAdapter(adapter);
     }
 

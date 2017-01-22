@@ -76,11 +76,10 @@ public class EntryManager {
         add(new RSSFeed("Korben", "http://korben.info/feed"));
     }
 
-    public List getFeed() {
+    public List<RSSFeed> getFeeds() {
         SQLiteDatabase db = new RSSFeedDbOpener(this.context).getWritableDatabase();
         String[] args = { "", "" };
-        List links = RSSFeedDb.get(db,args);
-        return links;
+        return RSSFeedDb.get(db, args);
     }
 
     /**
