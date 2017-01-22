@@ -45,13 +45,13 @@ public final class RSSFeedDb {
     public static List get(SQLiteDatabase db, String[] args) {
         String[] projection = {
                 RSSFeedDbOperation.FeedEntry._ID,
-                RSSFeedDbOperation.FeedEntry.COLUMN_NAME_LINK,
+                RSSFeedDbOperation.FeedEntry.COLUMN_NAME_URL,
         };
 
-        String selection = RSSFeedDbOperation.FeedEntry.COLUMN_NAME_LINK + " = ?";
+        String selection = RSSFeedDbOperation.FeedEntry.COLUMN_NAME_URL + " = ?";
 
         String sortOrder =
-                RSSFeedDbOperation.FeedEntry.COLUMN_NAME_LINK + " ASC";
+                RSSFeedDbOperation.FeedEntry.COLUMN_NAME_URL + " ASC";
 
         Cursor cursor = db.query(
                 RSSFeedDbOperation.FeedEntry.TABLE_NAME,                     // The table to query

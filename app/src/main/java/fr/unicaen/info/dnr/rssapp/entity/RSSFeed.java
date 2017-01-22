@@ -10,6 +10,7 @@ public class RSSFeed {
     private long id;
     private String name;
     private String url;
+    private List<RSSItem> items;
 
 
     public RSSFeed(long id, String name, String url) {
@@ -76,9 +77,22 @@ public class RSSFeed {
         return this;
     }
 
+    /**
+     * Get the items
+     * @return The items
+     */
     public List<RSSItem> getItems() {
-        // TODO: getItems
-        return new ArrayList<RSSItem>();
+        return this.items;
+    }
+
+    /**
+     * Set the items
+     * @param rssItems The items
+     * @return This
+     */
+    public RSSFeed setItems(List<RSSItem> rssItems) {
+        this.items = rssItems;
+        return this;
     }
 
     public String toString() {
