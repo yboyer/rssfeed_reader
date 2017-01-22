@@ -84,6 +84,39 @@ public final class RSSFeedDb {
     }
 
 
-
-
+    // public static RSSFeed find(SQLiteDatabase db, RSSFeed feedEntry) {
+    //     String[] projection = {
+    //         RSSFeedDbOperation.FeedEntry._ID,
+    //         RSSFeedDbOperation.FeedEntry.COLUMN_NAME_URL,
+    //     };
+    //
+    //     String[] where = {
+    //         feedEntry.getId()+""
+    //     };
+    //     String selection = RSSFeedDbOperation.FeedEntry._ID + " = ?";
+    //
+    //     Cursor cursor = db.query(
+    //         RSSFeedDbOperation.FeedEntry.TABLE_NAME,
+    //         projection, // The columns to return
+    //         selection, // The columns for the WHERE clause
+    //         where, // The values for the WHERE clause
+    //         null, // Rows group
+    //         null, // Row groups filter
+    //         null // The sort order
+    //     );
+    //
+    //     if (cursor.moveToNext()) {
+    //         final SQLiteDatabase feedDB = new RSSItemDbOpener(this.context).getWritableDatabase();
+    //         RSSItemDb.find()
+    //
+    //
+    //         // long linkId = cursor.getLong(cursor.getColumnIndex(RSSFeedDbOperation.FeedEntry._ID));
+    //         // String linkText = cursor.getString(cursor.getColumnIndex(RSSFeedDbOperation.FeedEntry.COLUMN_NAME_LINK));
+    //         //RSSFeed link = new RSSFeed(linkId,linkText);
+    //         //feed.add(link);
+    //     }
+    //     cursor.close();
+    //
+    //     return feedEntry;
+    // }
 }

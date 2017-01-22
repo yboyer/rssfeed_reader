@@ -86,7 +86,47 @@ public final class RSSItemDb {
         return itemIds;
     }
 
+    /**
+     * Get the feedEntry items
+     * @param db The database to interacti with
+     * @param feedEntry The feed reference
+     * @return The feedEntry items
+     */
+    public static List<RSSItem> getItems(SQLiteDatabase db, RSSFeed feedEntry) {
+        String[] projection = {
+            RSSItemDbOperation.ItemEntry._ID,
+            RSSItemDbOperation.ItemEntry.COLUMN_NAME_CONTENT,
+            RSSItemDbOperation.ItemEntry.COLUMN_NAME_DESCRIPTION,
+            RSSItemDbOperation.ItemEntry.COLUMN_NAME_LINK,
+            RSSItemDbOperation.ItemEntry.COLUMN_NAME_PUBDATE,
+            RSSItemDbOperation.ItemEntry.COLUMN_NAME_FEEDID,
+        };
 
+        String[] where = {
+            feedEntry.getId()+""
+        };
+        String selection = RSSItemDbOperation.ItemEntry.COLUMN_NAME_FEEDID + " = ?";
 
+        Cursor cursor = db.query(
+            RSSItemDbOperation.ItemEntry.TABLE_NAME,
+            projection, // The columns to return
+            selection, // The columns for the WHERE clause
+            where, // The values for the WHERE clause
+            null, // Rows group
+            null, // Row groups filter
+            null // The sort order
+        );
 
+        List items = new ArrayList();
+        while(cursor.moveToNext()) {
+        //     // long rssItemId = cursor.getLong(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry._ID));
+        //     // String rssItemText = cursor.getString(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry.COLUMN_NAME_TEXT));
+        //     // String rssItemDate = cursor.getString(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry.COLUMN_NAME_DATE));
+        //     // RSSItem rssItem = new RSSItem(rssItemId, rssItemText, rssItemDate);
+        //     // items.add(rssItem);
+        }
+        cursor.close();
+
+        return items;
+    }
 }
