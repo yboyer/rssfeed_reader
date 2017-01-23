@@ -1,6 +1,7 @@
 package fr.unicaen.info.dnr.rssapp;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -40,10 +42,19 @@ public class MainActivity extends AppCompatActivity {
 
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, rssLinks);
         rssList = (ListView) findViewById(R.id.rssList);
+
+        rssList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(MainActivity.this, RssItemActivity.class);
+                intent.putExtra("item", rssList.getItemAtPosition(position).toString());
+                startActivity(intent);
+            }
+        });
+
         rssList.setAdapter(adapter);
     }
 
-    @Override
+            @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_add:

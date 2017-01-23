@@ -13,4 +13,5 @@
     <string name="feedName">Feed name</string>
     <string name="error">Error</string>
     <string name="checking">Checking. Please wait…</string>
+    <string name="title_activity_rss_item">RssItemActivity</string>
 </resources>
