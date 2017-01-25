@@ -4,22 +4,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-            @Override
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_add:
@@ -73,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
         rssList = (ListView) findViewById(R.id.rssList);
 
-        rssList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        rssList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(MainActivity.this, RssItemActivity.class);
                 intent.putExtra("item", rssList.getItemIdAtPosition(position)+"");
