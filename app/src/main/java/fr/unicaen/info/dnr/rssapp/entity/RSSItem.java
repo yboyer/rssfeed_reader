@@ -125,7 +125,7 @@ public class RSSItem {
      * @return The publication date as a String
      */
     public String getStringPubDate() {
-        return this.dateFormatter.format(this.pubDate);
+        return (this.pubDate != null ? this.dateFormatter.format(this.pubDate) : "");
     }
 
     /**
