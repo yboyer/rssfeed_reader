@@ -17,10 +17,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import fr.unicaen.info.dnr.rssapp.adapter.RSSFeedCursorAdapter;
 import fr.unicaen.info.dnr.rssapp.entity.RSSFeed;
 import fr.unicaen.info.dnr.rssapp.manager.EntryManager;
@@ -115,7 +111,7 @@ public class MainActivity extends AppCompatActivity{
                     }
 
                     // Add the feed on database
-                    new EntryManager(main).add(new RSSFeed(name, url));
+                    new EntryManager(main).upsert(new RSSFeed(name, url));
                 }
             })
             .setNegativeButton(android.R.string.cancel, null);

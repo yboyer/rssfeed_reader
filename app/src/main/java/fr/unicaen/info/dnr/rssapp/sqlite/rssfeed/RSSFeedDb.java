@@ -42,81 +42,81 @@ public final class RSSFeedDb {
     }
 
     /**
-     * List all the links from our database.
+     * Get a rss feed
      * @param db : database.
      * @param args : arguments from the where clause.
-     * @return List of Object RSSFeed.
+     * @return The RSS feed.
      */
-    public static List get(SQLiteDatabase db, String[] args) {
-        // TODO: get by id instead of url
+    public static RSSFeed get(SQLiteDatabase db, long feedId) {
         String[] projection = {
-                RSSFeedDbOperation.FeedEntry._ID,
-                RSSFeedDbOperation.FeedEntry.COLUMN_NAME_NAME,
-                RSSFeedDbOperation.FeedEntry.COLUMN_NAME_URL,
+            RSSFeedDbOperation.FeedEntry._ID,
+            RSSFeedDbOperation.FeedEntry.COLUMN_NAME_NAME,
+            RSSFeedDbOperation.FeedEntry.COLUMN_NAME_URL,
         };
 
-        String selection = RSSFeedDbOperation.FeedEntry.COLUMN_NAME_NAME + " = ? AND "+ RSSFeedDbOperation.FeedEntry.COLUMN_NAME_URL + " = ? OR 1 = 1";
-
-        String sortOrder =
-                RSSFeedDbOperation.FeedEntry.COLUMN_NAME_URL + " ASC";
+        String selection = RSSFeedDbOperation.FeedEntry._ID + " = ?";
+        String[] where = { feedId + "" };
 
         Cursor cursor = db.query(
-                RSSFeedDbOperation.FeedEntry.TABLE_NAME,                     // The table to query
-                projection,                               // The columns to return
-                selection,                                // The columns for the WHERE clause
-                args,                            // The values for the WHERE clause
-                null,                                     // don't group the rows
-                null,                                     // don't filter by row groups
-                sortOrder                                 // The sort order
+            RSSFeedDbOperation.FeedEntry.TABLE_NAME, // The table to query
+            projection, // The columns to return
+            selection, // The columns for the WHERE clause
+            where, // The values for the WHERE clause
+            null, // don't group the rows
+            null, // don't filter by row groups
+            null // The sort order
         );
 
-        List feed = new ArrayList();
-        while (cursor.moveToNext()) {
+        RSSFeed feed = null;
+
+        if (cursor.moveToNext()) {
             long id = cursor.getLong(cursor.getColumnIndexOrThrow(RSSFeedDbOperation.FeedEntry._ID));
             String name = cursor.getString(cursor.getColumnIndexOrThrow(RSSFeedDbOperation.FeedEntry.COLUMN_NAME_NAME));
             String url = cursor.getString(cursor.getColumnIndexOrThrow(RSSFeedDbOperation.FeedEntry.COLUMN_NAME_URL));
 
-            feed.add(new RSSFeed(id, name, url));
+            feed = new RSSFeed(id, name, url);
         }
         cursor.close();
 
         return feed;
     }
 
+    /**
+     * Get a rss feed
+     * @param db : database.
+     * @param args : arguments from the where clause.
+     * @return The RSS feed.
+     */
+    public static List<RSSFeed> getAll(SQLiteDatabase db) {
+        String[] projection = {
+            RSSFeedDbOperation.FeedEntry._ID,
+            RSSFeedDbOperation.FeedEntry.COLUMN_NAME_NAME,
+            RSSFeedDbOperation.FeedEntry.COLUMN_NAME_URL,
+        };
 
-    // public static RSSFeed find(SQLiteDatabase db, RSSFeed feedEntry) {
-    //     String[] projection = {
-    //         RSSFeedDbOperation.FeedEntry._ID,
-    //         RSSFeedDbOperation.FeedEntry.COLUMN_NAME_URL,
-    //     };
-    //
-    //     String[] where = {
-    //         feedEntry.getId()+""
-    //     };
-    //     String selection = RSSFeedDbOperation.FeedEntry._ID + " = ?";
-    //
-    //     Cursor cursor = db.query(
-    //         RSSFeedDbOperation.FeedEntry.TABLE_NAME,
-    //         projection, // The columns to return
-    //         selection, // The columns for the WHERE clause
-    //         where, // The values for the WHERE clause
-    //         null, // Rows group
-    //         null, // Row groups filter
-    //         null // The sort order
-    //     );
-    //
-    //     if (cursor.moveToNext()) {
-    //         final SQLiteDatabase feedDB = new RSSItemDbOpener(this.context).getWritableDatabase();
-    //         RSSItemDb.find()
-    //
-    //
-    //         // long linkId = cursor.getLong(cursor.getColumnIndex(RSSFeedDbOperation.FeedEntry._ID));
-    //         // String linkText = cursor.getString(cursor.getColumnIndex(RSSFeedDbOperation.FeedEntry.COLUMN_NAME_LINK));
-    //         //RSSFeed link = new RSSFeed(linkId,linkText);
-    //         //feed.add(link);
-    //     }
-    //     cursor.close();
-    //
-    //     return feedEntry;
-    // }
+        String selection = RSSFeedDbOperation.FeedEntry._ID + " = ?";
+        String[] where = {};
+
+        Cursor cursor = db.query(
+            RSSFeedDbOperation.FeedEntry.TABLE_NAME, // The table to query
+            projection, // The columns to return
+            null, // The columns for the WHERE clause
+            null, // The values for the WHERE clause
+            null, // don't group the rows
+            null, // don't filter by row groups
+            null // The sort order
+        );
+
+        List feeds = new ArrayList();
+        while (cursor.moveToNext()) {
+            long id = cursor.getLong(cursor.getColumnIndexOrThrow(RSSFeedDbOperation.FeedEntry._ID));
+            String name = cursor.getString(cursor.getColumnIndexOrThrow(RSSFeedDbOperation.FeedEntry.COLUMN_NAME_NAME));
+            String url = cursor.getString(cursor.getColumnIndexOrThrow(RSSFeedDbOperation.FeedEntry.COLUMN_NAME_URL));
+
+            feeds.add(new RSSFeed(id, name, url));
+        }
+        cursor.close();
+
+        return feeds;
+    }
 }

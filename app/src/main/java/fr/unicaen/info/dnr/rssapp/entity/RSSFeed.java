@@ -23,6 +23,10 @@ public class RSSFeed {
         this(-1, name, url);
     }
 
+    public RSSFeed(long id) {
+        this.id = id;
+    }
+
     /**
      * get the id
      * @return the id

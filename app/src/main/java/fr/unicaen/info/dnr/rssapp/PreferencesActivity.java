@@ -1,6 +1,5 @@
 package fr.unicaen.info.dnr.rssapp;
 
-import android.preference.PreferenceFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 

@@ -89,14 +89,14 @@ public final class RSSItemDb {
         return itemIds;
     }
 
-    public static List<RSSItem> getItemsById(SQLiteDatabase db, long id) {
+    public static List<RSSItem> getItemsByFeedId(SQLiteDatabase db, long id) {
         String[] projection = {
-                RSSItemDbOperation.ItemEntry._ID,
-                RSSItemDbOperation.ItemEntry.COLUMN_NAME_PUBDATE,
-                RSSItemDbOperation.ItemEntry.COLUMN_NAME_CONTENT,
-                RSSItemDbOperation.ItemEntry.COLUMN_NAME_DESCRIPTION,
-                RSSItemDbOperation.ItemEntry.COLUMN_NAME_LINK,
-                RSSItemDbOperation.ItemEntry.COLUMN_NAME_FEEDID,
+            RSSItemDbOperation.ItemEntry._ID,
+            RSSItemDbOperation.ItemEntry.COLUMN_NAME_PUBDATE,
+            RSSItemDbOperation.ItemEntry.COLUMN_NAME_CONTENT,
+            RSSItemDbOperation.ItemEntry.COLUMN_NAME_DESCRIPTION,
+            RSSItemDbOperation.ItemEntry.COLUMN_NAME_LINK,
+            RSSItemDbOperation.ItemEntry.COLUMN_NAME_FEEDID,
         };
         String[] where = {
                 id + ""
@@ -104,13 +104,13 @@ public final class RSSItemDb {
         String selection = RSSItemDbOperation.ItemEntry.COLUMN_NAME_FEEDID + " = ?";
 
         Cursor cursor = db.query(
-                RSSItemDbOperation.ItemEntry.TABLE_NAME,
-                projection, // The columns to return
-                selection, // The columns for the WHERE clause
-                where, // The values for the WHERE clause
-                null, // Rows group
-                null, // Row groups filter
-                null // The sort order
+            RSSItemDbOperation.ItemEntry.TABLE_NAME,
+            projection, // The columns to return
+            selection, // The columns for the WHERE clause
+            where, // The values for the WHERE clause
+            null, // Rows group
+            null, // Row groups filter
+            null // The sort order
         );
         List<RSSItem> items = new ArrayList();
         while(cursor.moveToNext()) {
