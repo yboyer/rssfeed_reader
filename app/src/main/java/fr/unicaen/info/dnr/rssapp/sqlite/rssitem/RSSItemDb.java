@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import fr.unicaen.info.dnr.rssapp.entity.RSSFeed;
@@ -86,6 +87,51 @@ public final class RSSItemDb {
         // cursor.close();
         //
         return itemIds;
+    }
+
+    public static List<RSSItem> getItemsById(SQLiteDatabase db, long id) {
+        String[] projection = {
+                RSSItemDbOperation.ItemEntry._ID,
+                RSSItemDbOperation.ItemEntry.COLUMN_NAME_PUBDATE,
+                RSSItemDbOperation.ItemEntry.COLUMN_NAME_CONTENT,
+                RSSItemDbOperation.ItemEntry.COLUMN_NAME_DESCRIPTION,
+                RSSItemDbOperation.ItemEntry.COLUMN_NAME_LINK,
+                RSSItemDbOperation.ItemEntry.COLUMN_NAME_FEEDID,
+        };
+        String[] where = {
+                id + ""
+        };
+        String selection = RSSItemDbOperation.ItemEntry.COLUMN_NAME_FEEDID + " = ?";
+
+        Cursor cursor = db.query(
+                RSSItemDbOperation.ItemEntry.TABLE_NAME,
+                projection, // The columns to return
+                selection, // The columns for the WHERE clause
+                where, // The values for the WHERE clause
+                null, // Rows group
+                null, // Row groups filter
+                null // The sort order
+        );
+        List<RSSItem> items = new ArrayList();
+        while(cursor.moveToNext()) {
+            long rssItemId = cursor.getLong(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry._ID));
+            Date rssItemPubDate = new Date(cursor.getLong(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry.COLUMN_NAME_PUBDATE)));
+            String rssItemContent = cursor.getString(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry.COLUMN_NAME_CONTENT));
+            String rssItemDescription = cursor.getString(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry.COLUMN_NAME_DESCRIPTION));
+            String rssItemLink = cursor.getString(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry.COLUMN_NAME_LINK));
+            long rssItemFeedId = cursor.getLong(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry.COLUMN_NAME_FEEDID));
+            RSSItem rssItem = new RSSItem()
+                    .setId(rssItemId)
+                    .setLink(rssItemLink)
+                    .setDescription(rssItemDescription)
+                    .setContent(rssItemContent)
+                    .setPubDate(rssItemPubDate)
+                    .setFeedId(rssItemFeedId);
+            items.add(rssItem);
+        }
+        cursor.close();
+
+        return items;
     }
 
     /**

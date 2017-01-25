@@ -41,15 +41,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         new EntryManager(this).fill();
-
-        List<RSSFeed> links = new EntryManager(this).getFeeds();
-        List<String> rssLinks = new ArrayList<String>();
-        List<RSSFeed > rssLinks2 = new ArrayList<RSSFeed >();
-        for (RSSFeed feed : links) {
-            // TODO: improve the display
-            rssLinks.add(feed.toString());
-            rssLinks2.add(feed);
-        }
         this.setAdapter();
 
     }
@@ -76,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         rssList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(MainActivity.this, RssItemActivity.class);
-                intent.putExtra("item", rssList.getItemIdAtPosition(position)+"");
+                intent.putExtra("id", rssList.getItemIdAtPosition(position));
                 startActivity(intent);
             }
         });

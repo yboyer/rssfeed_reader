@@ -82,6 +82,11 @@ public class EntryManager {
         return RSSFeedDb.get(db, args);
     }
 
+    public List<RSSItem> getItemsById(long id) {
+        SQLiteDatabase db = new RSSItemDbOpener(this.context).getWritableDatabase();
+        return RSSItemDb.getItemsById(db,id);
+    }
+
     /**
      * Add a feed and its items on database
      * @param rssFeed The RSS feed
