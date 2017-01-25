@@ -39,7 +39,8 @@ public class RssItemActivity extends AppCompatActivity {
         for(int i = 0 ; i < items.size() ; i++) {
             element = new HashMap();
             element.put("link", items.get(i).getLink());
-            element.put("date", DateFormat.getDateTimeInstance().format(items.get(i).getPubDate()) + "");
+            if (items.get(i).getStringPubDate() != "")
+                element.put("date", DateFormat.getDateTimeInstance().format(items.get(i).getPubDate()) + "");
             element.put("description", Html.fromHtml(items.get(i).getDescription()).toString());
             liste.add(element);
         }

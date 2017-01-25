@@ -48,7 +48,7 @@
         android:layout_toRightOf="@+id/thumbnail"/>
 
     <!-- Rightend Edit -->
-    <ImageButton
+    <ImageView
         android:id="@+id/edit"
         android:layout_width="17dip"
         android:layout_height="17dip"
@@ -60,7 +60,7 @@
         android:background="@drawable/ic_edit_black_24dp" />
 
     <!-- Rightend Delete -->
-    <ImageButton
+    <ImageView
         android:id="@+id/delete"
         android:layout_width="17dip"
         android:layout_height="17dip"
