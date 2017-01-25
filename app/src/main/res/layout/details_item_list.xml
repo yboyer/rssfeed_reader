@@ -13,6 +13,7 @@
         android:textColor="@color/colorAccent"
         android:textStyle="bold"
         android:padding="7px"
+        android:autoLink="web"
         android:id="@+id/link"/>
 
     <TextView

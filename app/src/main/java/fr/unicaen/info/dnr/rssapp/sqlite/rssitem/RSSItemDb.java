@@ -115,7 +115,7 @@ public final class RSSItemDb {
         List<RSSItem> items = new ArrayList();
         while(cursor.moveToNext()) {
             long rssItemId = cursor.getLong(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry._ID));
-            Date rssItemPubDate = new Date(cursor.getLong(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry.COLUMN_NAME_PUBDATE)));
+            String rssItemPubDate = cursor.getString(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry.COLUMN_NAME_PUBDATE));
             String rssItemContent = cursor.getString(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry.COLUMN_NAME_CONTENT));
             String rssItemDescription = cursor.getString(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry.COLUMN_NAME_DESCRIPTION));
             String rssItemLink = cursor.getString(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry.COLUMN_NAME_LINK));
@@ -125,7 +125,7 @@ public final class RSSItemDb {
                     .setLink(rssItemLink)
                     .setDescription(rssItemDescription)
                     .setContent(rssItemContent)
-                    .setPubDate(rssItemPubDate)
+                    .setStringPubDate(rssItemPubDate)
                     .setFeedId(rssItemFeedId);
             items.add(rssItem);
         }
