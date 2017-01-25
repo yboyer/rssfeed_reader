@@ -78,11 +78,11 @@ public class EntryManager {
      * Fill the database with default RSS feeds
      */
     public void fill() {
-        clean();
-        add(new RSSFeed("Korben", "http://korben.info/feed"));
-        add(new RSSFeed("Le monde", "http://lesclesdedemain.lemonde.fr/screens/RSS/sw_getFeed.php?idTheme=HOME"));
-        add(new RSSFeed("Libération", "http://rss.liberation.fr/rss/latest/"));
-        add(new RSSFeed("BBC", "http://feeds.bbci.co.uk/news/video_and_audio/technology/rss.xml"));
+        //clean();
+        upsert(new RSSFeed("Korben", "http://korben.info/feed"));
+        //add(new RSSFeed("Le monde", "http://lesclesdedemain.lemonde.fr/screens/RSS/sw_getFeed.php?idTheme=HOME"));
+        //add(new RSSFeed("Libération", "http://rss.liberation.fr/rss/latest/"));
+        //add(new RSSFeed("BBC", "http://feeds.bbci.co.uk/news/video_and_audio/technology/rss.xml"));
     }
 
     public List<RSSFeed> getFeeds() {
@@ -100,12 +100,13 @@ public class EntryManager {
      * Add a feed and its items on database
      * @param rssFeed The RSS feed
      */
-    public void add(final RSSFeed rssFeed) {
+    public void upsert(final RSSFeed rssFeed) {
         showLoading();
 
         // Add the feed item on database
         final SQLiteDatabase feedDB = new RSSFeedDbOpener(this.context).getWritableDatabase();
-        final long feedId = RSSFeedDb.add(feedDB, rssFeed);
+        final long feedId;
+        feedId = RSSFeedDb.add(feedDB, rssFeed);
 
         // For the future uses
         final Context context = this.context;

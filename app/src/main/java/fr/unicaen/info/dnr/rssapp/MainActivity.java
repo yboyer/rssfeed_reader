@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -26,19 +27,18 @@ import fr.unicaen.info.dnr.rssapp.manager.EntryManager;
 import fr.unicaen.info.dnr.rssapp.sqlite.rssfeed.RSSFeedDbOpener;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     private ListView rssList;
     private AlertDialog addFeedDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        new EntryManager(this).fill();
-        this.setAdapter();
-
+        rssList = (ListView) findViewById(R.id.rssList);
+        this.refreshList();
     }
 
     @Override
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void setAdapter() {
+    public void refreshList() {
         SQLiteDatabase readableDatabase = new RSSFeedDbOpener(this).getReadableDatabase();
         String query = "SELECT * FROM rssfeed;";
         Cursor cursor = readableDatabase.rawQuery(query,null);
