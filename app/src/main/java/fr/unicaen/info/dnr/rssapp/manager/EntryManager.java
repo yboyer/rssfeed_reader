@@ -85,15 +85,28 @@ public class EntryManager {
         add(new RSSFeed("BBC", "http://feeds.bbci.co.uk/news/video_and_audio/technology/rss.xml"));
     }
 
+    /**
+     * Get all rss feeds
+     * @return The rss feeds
+     */
     public List<RSSFeed> getFeeds() {
         SQLiteDatabase db = new RSSFeedDbOpener(this.context).getWritableDatabase();
-        String[] args = { "", "" };
-        return RSSFeedDb.get(db, args);
+        return RSSFeedDb.getAll(db);
     }
 
-    public List<RSSItem> getItemsById(long id) {
-        SQLiteDatabase db = new RSSItemDbOpener(this.context).getWritableDatabase();
-        return RSSItemDb.getItemsById(db,id);
+    /**
+     * Get one rss feed
+     * @param id The feed id
+     * @return The rss feed
+     */
+    public RSSFeed getFeed(long id) {
+        SQLiteDatabase feedDB = new RSSFeedDbOpener(this.context).getWritableDatabase();
+        SQLiteDatabase itemDB = new RSSItemDbOpener(this.context).getWritableDatabase();
+        RSSFeed feedEntry = RSSFeedDb.get(feedDB, id);
+
+        feedEntry.setItems(RSSItemDb.getItemsByFeedId(itemDB, id));
+
+        return feedEntry;
     }
 
     /**
