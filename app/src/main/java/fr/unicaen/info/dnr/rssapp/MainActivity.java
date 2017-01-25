@@ -2,11 +2,15 @@ package fr.unicaen.info.dnr.rssapp;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,10 +19,15 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import fr.unicaen.info.dnr.rssapp.adapter.RSSFeedCursorAdapter;
 import fr.unicaen.info.dnr.rssapp.entity.RSSFeed;
 import fr.unicaen.info.dnr.rssapp.manager.EntryManager;
+import fr.unicaen.info.dnr.rssapp.sqlite.rssfeed.RSSFeedDbOpener;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -35,23 +44,14 @@ public class MainActivity extends AppCompatActivity {
 
         List<RSSFeed> links = new EntryManager(this).getFeeds();
         List<String> rssLinks = new ArrayList<String>();
+        List<RSSFeed > rssLinks2 = new ArrayList<RSSFeed >();
         for (RSSFeed feed : links) {
             // TODO: improve the display
             rssLinks.add(feed.toString());
+            rssLinks2.add(feed);
         }
+        this.setAdapter();
 
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, rssLinks);
-        rssList = (ListView) findViewById(R.id.rssList);
-
-        rssList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(MainActivity.this, RssItemActivity.class);
-                intent.putExtra("item", rssList.getItemAtPosition(position).toString());
-                startActivity(intent);
-            }
-        });
-
-        rssList.setAdapter(adapter);
     }
 
             @Override
@@ -62,6 +62,26 @@ public class MainActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void setAdapter() {
+        SQLiteDatabase readableDatabase = new RSSFeedDbOpener(this).getReadableDatabase();
+        String query = "SELECT * FROM rssfeed;";
+        Cursor cursor = readableDatabase.rawQuery(query,null);
+        RSSFeedCursorAdapter adapter = new RSSFeedCursorAdapter(
+                this, R.layout.item_list, cursor, 0 );
+
+        rssList = (ListView) findViewById(R.id.rssList);
+
+        rssList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(MainActivity.this, RssItemActivity.class);
+                intent.putExtra("item", rssList.getItemIdAtPosition(position)+"");
+                startActivity(intent);
+            }
+        });
+
+        rssList.setAdapter(adapter);
     }
 
     /**
