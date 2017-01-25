@@ -1,29 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="5dip" >
 
-    <TextView
+    <!--  ListRow Left sied Thumbnail image -->
+    <LinearLayout android:id="@+id/thumbnail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10px"
-        android:layout_marginLeft="10px"
-        android:textSize="25dp"
-        android:textColor="#000"
-        android:textStyle="bold"
-        android:padding="7px"
-        android:id="@+id/name"/>
+        android:padding="3dip"
+        android:layout_alignParentLeft="true"
+        android:layout_marginRight="5dip">
 
+        <ImageView
+            android:id="@+id/list_image"
+            android:layout_width="50dip"
+            android:layout_height="50dip"
+            android:background="@mipmap/ic_launcher" />
+
+    </LinearLayout>
+
+    <!-- Title -->
     <TextView
+        android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10px"
-        android:layout_marginBottom="10px"
-        android:textSize="15dp"
+        android:layout_alignTop="@+id/thumbnail"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:layout_marginRight="35dip"
+        android:textColor="#040404"
+        android:typeface="sans"
+        android:textSize="16dip"
+        android:textStyle="bold"/>
+
+    <!-- URL -->
+    <TextView
+        android:id="@+id/url"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="35dip"
+        android:layout_below="@id/name"
         android:textColor="@color/colorSubtitle"
-        android:textStyle="italic"
-        android:padding="7px"
-        android:id="@+id/url"/>
+        android:textSize="10dip"
+        android:layout_marginTop="1dip"
+        android:layout_toRightOf="@+id/thumbnail"/>
 
-</LinearLayout>
+    <!-- Rightend Edit -->
+    <ImageButton
+        android:id="@+id/edit"
+        android:layout_width="17dip"
+        android:layout_height="17dip"
+        android:layout_alignTop="@+id/thumbnail"
+        android:layout_marginTop="5dip"
+        android:layout_marginRight="5dip"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/ic_edit_black_24dp" />
+
+    <!-- Rightend Delete -->
+    <ImageButton
+        android:id="@+id/delete"
+        android:layout_width="17dip"
+        android:layout_height="17dip"
+        android:layout_alignBottom="@+id/thumbnail"
+        android:layout_marginRight="5dip"
+        android:layout_marginBottom="5dip"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_alignStart="@+id/edit"
+        android:background="@drawable/ic_delete_black_24dp" />
+
+</RelativeLayout>
