@@ -37,6 +37,30 @@ public class MainActivity extends AppCompatActivity{
         this.refreshList();
     }
 
+    // method to remove list item
+    protected void removeItemFromList(int position) {
+        final int deletePosition = position;
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(
+                MainActivity.this);
+
+        alert.setTitle("Supression");
+        alert.setMessage("Êtes-vous sur de vouloir supprimer l'item ?");
+        alert.setPositiveButton("OUI", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //code pour remove l'item de la rssList et de la BDD
+            }
+        });
+        alert.setNegativeButton("RETOUR", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alert.show();
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -64,6 +88,16 @@ public class MainActivity extends AppCompatActivity{
                 Intent intent = new Intent(MainActivity.this, RssItemActivity.class);
                 intent.putExtra("id", rssList.getItemIdAtPosition(position));
                 startActivity(intent);
+            }
+        });
+
+        rssList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            // setting onItemLongClickListener and passing the position to the function
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapter, View v,
+                                           int position, long id) {
+                removeItemFromList(position);
+                return true;
             }
         });
 
