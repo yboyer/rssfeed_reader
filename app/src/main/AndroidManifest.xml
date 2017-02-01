@@ -12,6 +12,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/rss_link">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,6 +22,7 @@
 
         <activity
             android:name=".PreferencesActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/settings"
             android:parentActivityName=".MainActivity">
             <meta-data
@@ -30,6 +32,7 @@
 
         <activity
             android:name=".RssItemActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
