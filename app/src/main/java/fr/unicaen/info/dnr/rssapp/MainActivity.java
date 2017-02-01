@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -17,6 +16,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+
 import fr.unicaen.info.dnr.rssapp.adapter.RSSFeedCursorAdapter;
 import fr.unicaen.info.dnr.rssapp.entity.RSSFeed;
 import fr.unicaen.info.dnr.rssapp.manager.EntryManager;
@@ -42,6 +42,9 @@ public class MainActivity extends AppCompatActivity{
         switch (item.getItemId()) {
             case R.id.menu_add:
                 openAddFeedDialogBox();
+                return true;
+            case R.id.menu_settings:
+                startActivity(new Intent(this, PreferencesActivity.class));
                 return true;
         }
         return super.onOptionsItemSelected(item);

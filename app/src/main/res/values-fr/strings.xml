@@ -12,5 +12,10 @@
     <string name="feedAdress">Adresse du flux</string>
     <string name="feedName">Nom du flux</string>
     <string name="error">Erreur</string>
-    <string name="checking">Vérification du lien. Veuillez patienter...</string>
+    <string name="checking">Vérification du lien. Veuillez patienter…</string>
+    <string name="settings">Préférences</string>
+    <string name="update_message">Lorsqu\'activé, l\'application recharge un fois par jour les flux RSS</string>
+    <string name="autoupdate">Mises à jour automatique</string>
+    <string name="data_update">Mise à jour en données mobile</string>
+    <string name="wifi_update">Mise à jour en wifi</string>
 </resources>
