@@ -1,50 +1,35 @@
 package fr.unicaen.info.dnr.rssapp.manager;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import java.util.List;
 import fr.unicaen.info.dnr.rssapp.R;
-import fr.unicaen.info.dnr.rssapp.entity.*; // RSSItem, RSSFeed
-import fr.unicaen.info.dnr.rssapp.sqlite.rssfeed.*; // RSSFeedDb, RSSFeedDbOpener
-import fr.unicaen.info.dnr.rssapp.sqlite.rssitem.*; // RSSItemDb, RSSItemDbOpener
+import fr.unicaen.info.dnr.rssapp.entity.RSSFeed;
+import fr.unicaen.info.dnr.rssapp.entity.RSSItem;
+import fr.unicaen.info.dnr.rssapp.sqlite.rssfeed.RSSFeedDb;
+import fr.unicaen.info.dnr.rssapp.sqlite.rssfeed.RSSFeedDbOpener;
+import fr.unicaen.info.dnr.rssapp.sqlite.rssfeed.RSSFeedDbOperation;
+import fr.unicaen.info.dnr.rssapp.sqlite.rssitem.RSSItemDb;
+import fr.unicaen.info.dnr.rssapp.sqlite.rssitem.RSSItemDbOpener;
+import fr.unicaen.info.dnr.rssapp.sqlite.rssitem.RSSItemDbOperation;
 
 /**
  * Represents an entry manager.
  */
 public class EntryManager {
+    /**
+     * The async callback
+     */
+    public interface AsyncResponse {
+        void processFinish();
+    }
+
     private final Context context;
-    public static ProgressDialog loading;
-    public static int pending = 0;
 
     public EntryManager(Context context) {
         this.context = context;
-    }
-
-    /**
-     * Display the loading dialog
-     */
-    private void showLoading() {
-        this.pending++;
-        if (this.loading == null) {
-            this.loading = new ProgressDialog(this.context);
-            this.loading.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            this.loading.setMessage(this.context.getResources().getString(R.string.checking));
-            this.loading.setIndeterminate(true);
-            this.loading.setCancelable(false);
-        }
-        this.loading.show();
-    }
-
-    /**
-     * Close the loading dialog
-     */
-    private void closeLoading() {
-        if (--this.pending == 0) {
-            this.loading.dismiss();
-        }
     }
 
     /**
@@ -79,7 +64,6 @@ public class EntryManager {
      */
     public void fill() {
         //clean();
-        upsert(new RSSFeed("Korben", "http://korben.info/feed"));
         //add(new RSSFeed("Le monde", "http://lesclesdedemain.lemonde.fr/screens/RSS/sw_getFeed.php?idTheme=HOME"));
         //add(new RSSFeed("Libération", "http://rss.liberation.fr/rss/latest/"));
         //add(new RSSFeed("BBC", "http://feeds.bbci.co.uk/news/video_and_audio/technology/rss.xml"));
@@ -113,9 +97,7 @@ public class EntryManager {
      * Add a feed and its items on database
      * @param rssFeed The RSS feed
      */
-    public void upsert(final RSSFeed rssFeed) {
-        showLoading();
-
+    public void upsert(final RSSFeed rssFeed, final AsyncResponse callback) {
         // Add the feed item on database
         final SQLiteDatabase feedDB = new RSSFeedDbOpener(this.context).getWritableDatabase();
         final long feedId;
@@ -128,8 +110,6 @@ public class EntryManager {
         new RetrieveFeedTask(new RetrieveFeedTask.AsyncResponse(){
             @Override
             public void processFinish(List<RSSItem> items, Exception e){
-                closeLoading();
-
                 if (e != null) {
                     // Display the exception as an error
                     new AlertDialog.Builder(context)
@@ -146,6 +126,10 @@ public class EntryManager {
                 final SQLiteDatabase itemDB = new RSSItemDbOpener(context).getWritableDatabase();
                 for (RSSItem item : items) {
                     RSSItemDb.add(itemDB, item.setFeedId(feedId));
+                }
+
+                if (callback != null) {
+                    callback.processFinish();
                 }
             }
         }).execute(rssFeed);

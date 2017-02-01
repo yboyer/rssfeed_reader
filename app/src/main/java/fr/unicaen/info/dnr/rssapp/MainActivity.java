@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity{
                     }
 
                     // Add the feed on database
-                    new EntryManager(main).upsert(new RSSFeed(name, url));
+                    new EntryManager(main).upsert(new RSSFeed(name, url), null);
                 }
             })
             .setNegativeButton(android.R.string.cancel, null);
