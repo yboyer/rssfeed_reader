@@ -11,7 +11,8 @@
         android:title="@string/addFeed"
         app:showAsAction="ifRoom" />
 
-    <item android:title="@string/settings"
+    <item
+        android:title="@string/settings"
         android:icon="@drawable/ic_settings_white_24dp"
         android:visible="true"
         android:enabled="true"

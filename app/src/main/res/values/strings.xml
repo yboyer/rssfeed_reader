@@ -18,4 +18,5 @@
     <string name="autoupdate">Automatic updates</string>
     <string name="wifi_update">Update on WiFi network</string>
     <string name="data_update" >Update on data network</string>
+    <string name="existing_feed">This RSS feed already exists!</string>
 </resources>

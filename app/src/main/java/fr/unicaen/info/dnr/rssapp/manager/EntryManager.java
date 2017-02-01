@@ -1,12 +1,14 @@
 package fr.unicaen.info.dnr.rssapp.manager;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.widget.Toast;
 
 import java.util.List;
+
 import fr.unicaen.info.dnr.rssapp.R;
 import fr.unicaen.info.dnr.rssapp.entity.RSSFeed;
 import fr.unicaen.info.dnr.rssapp.entity.RSSItem;
@@ -58,6 +60,14 @@ public class EntryManager {
         //add(new RSSFeed("BBC", "http://feeds.bbci.co.uk/news/video_and_audio/technology/rss.xml"));
     }
 
+    /**
+     * Get the feeds retrieval cursor
+     * @return The cursor
+     */
+    public Cursor getFeedsCursor() {
+        SQLiteDatabase feedDB = new RSSFeedDbOpener(this.context).getReadableDatabase();
+        return RSSFeedDb.getFeedsCursor(feedDB);
+    }
 
     /**
      * Get one RSS feed.
@@ -98,47 +108,56 @@ public class EntryManager {
 
     /**
      * Add a feed and its items on database
+     * @param rssFeed The feed to add
+     */
+    public void insert(final RSSFeed rssFeed) {
+        if (findFeed(rssFeed) != null) {
+            Toast.makeText(this.context, R.string.existing_feed, Toast.LENGTH_SHORT).show();
+        } else {
+            upsert(rssFeed, null);
+        }
+    }
+
+    /**
+     * Update a feed and its items on database
      * @param rssFeed The RSS feed
+     * @param callback The callback
      */
     public void upsert(final RSSFeed rssFeed, final AsyncResponse callback) {
         // Add the feed item on database
         final SQLiteDatabase feedDB = new RSSFeedDbOpener(this.context).getWritableDatabase();
-        if (findFeed(rssFeed) == null) {
-            final long feedId = RSSFeedDb.add(feedDB, rssFeed);
-            // For the future uses
-            final Context context = this.context;
+        final long feedId = RSSFeedDb.add(feedDB, rssFeed);
+        // For the future uses
+        final Context context = this.context;
 
-            // Async retrieve
-            new RetrieveFeedTask(new RetrieveFeedTask.AsyncResponse(){
-                @Override
-                public void processFinish(List<RSSItem> items, Exception e){
-                    if (e != null) {
-                        // Display the exception as an error
-                        new AlertDialog.Builder(context)
-                            .setTitle(R.string.error)
-                            .setMessage(e.getMessage())
-                            .setPositiveButton(android.R.string.ok, null)
-                            .show();
-                        return;
-                    }
+        // Async retrieve
+        new RetrieveFeedTask(new RetrieveFeedTask.AsyncResponse(){
+            @Override
+            public void processFinish(List<RSSItem> items, Exception e){
+                if (e != null) {
+                    // Display the exception as an error
+                    new AlertDialog.Builder(context)
+                        .setTitle(R.string.error)
+                        .setMessage(e.getMessage())
+                        .setPositiveButton(android.R.string.ok, null)
+                        .show();
+                    return;
+                }
 
-                    Log.d("## EntryManager:add", rssFeed.getUrl() + " have " + items.size() + " items");
+                Log.d("## EntryManager:add", rssFeed.getUrl() + " have " + items.size() + " items");
 
-                    // Add feed items on database
-                    final SQLiteDatabase itemDB = new RSSItemDbOpener(context).getWritableDatabase();
-                    for (RSSItem item : items) {
-                        if (findItem(item) == null) {
-                            RSSItemDb.add(itemDB, item.setFeedId(feedId));
-                        }
-                    }
-
-                    if (callback != null) {
-                        callback.processFinish();
+                // Add feed items on database
+                final SQLiteDatabase itemDB = new RSSItemDbOpener(context).getWritableDatabase();
+                for (RSSItem item : items) {
+                    if (findItem(item) == null) {
+                        RSSItemDb.add(itemDB, item.setFeedId(feedId));
                     }
                 }
-            }).execute(rssFeed);
-        } else {
-            Toast.makeText(this.context, "Ce flux RSS a déjà été ajouté !", Toast.LENGTH_SHORT).show();
-        }
+
+                if (callback != null) {
+                    callback.processFinish();
+                }
+            }
+        }).execute(rssFeed);
     }
 }

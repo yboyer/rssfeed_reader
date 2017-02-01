@@ -2,8 +2,6 @@ package fr.unicaen.info.dnr.rssapp;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -20,7 +18,6 @@ import android.widget.ListView;
 import fr.unicaen.info.dnr.rssapp.adapter.RSSFeedCursorAdapter;
 import fr.unicaen.info.dnr.rssapp.entity.RSSFeed;
 import fr.unicaen.info.dnr.rssapp.manager.EntryManager;
-import fr.unicaen.info.dnr.rssapp.sqlite.rssfeed.RSSFeedDbOpener;
 
 
 public class MainActivity extends AppCompatActivity{
@@ -34,6 +31,24 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         rssList = (ListView) findViewById(R.id.rssList);
+
+        rssList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(MainActivity.this, RssItemActivity.class);
+                intent.putExtra("id", rssList.getItemIdAtPosition(position));
+                startActivity(intent);
+            }
+        });
+
+        rssList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            // setting onItemLongClickListener and passing the position to the function
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapter, View v, int position, long id) {
+                removeItemFromList(position);
+                return true;
+            }
+        });
+
         //new EntryManager(this).clean();
         this.refreshList();
     }
@@ -47,18 +62,13 @@ public class MainActivity extends AppCompatActivity{
 
         alert.setTitle("Supression");
         alert.setMessage("Êtes-vous sur de vouloir supprimer l'item ?");
-        alert.setPositiveButton("OUI", new DialogInterface.OnClickListener() {
+        alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //code pour remove l'item de la rssList et de la BDD
             }
         });
-        alert.setNegativeButton("RETOUR", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+        alert.setNegativeButton(android.R.string.no, null);
         alert.show();
     }
 
@@ -79,33 +89,12 @@ public class MainActivity extends AppCompatActivity{
      * Refresh the ListView of all RSS feeds.
      */
     public void refreshList() {
-        SQLiteDatabase readableDatabase = new RSSFeedDbOpener(this).getReadableDatabase();
-        String query = "SELECT * FROM rssfeed;";
-        Cursor cursor = readableDatabase.rawQuery(query,null);
-        RSSFeedCursorAdapter adapter = new RSSFeedCursorAdapter(
-                this, R.layout.item_list, cursor, 0 );
-
-        rssList = (ListView) findViewById(R.id.rssList);
-
-        rssList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(MainActivity.this, RssItemActivity.class);
-                intent.putExtra("id", rssList.getItemIdAtPosition(position));
-                startActivity(intent);
-            }
-        });
-
-        rssList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            // setting onItemLongClickListener and passing the position to the function
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapter, View v,
-                                           int position, long id) {
-                removeItemFromList(position);
-                return true;
-            }
-        });
-
-        rssList.setAdapter(adapter);
+        rssList.setAdapter(new RSSFeedCursorAdapter(
+            this,
+            R.layout.item_list,
+            new EntryManager(this).getFeedsCursor(),
+            0
+        ));
     }
 
     /**
@@ -152,7 +141,7 @@ public class MainActivity extends AppCompatActivity{
                     }
 
                     // Add the feed on database
-                    new EntryManager(main).upsert(new RSSFeed(name, url), null);
+                    new EntryManager(main).insert(new RSSFeed(name, url));
                 }
             })
             .setNegativeButton(android.R.string.cancel, null);

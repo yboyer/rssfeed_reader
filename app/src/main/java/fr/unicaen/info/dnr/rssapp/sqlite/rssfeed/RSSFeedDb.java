@@ -123,4 +123,21 @@ public final class RSSFeedDb {
 
         return feed;
     }
+
+    /**
+     * Get the feeds cursor
+     * @param db The database
+     * @return The cursor
+     */
+    public static Cursor getFeedsCursor(SQLiteDatabase db) {
+        return db.query(
+            RSSFeedDbOperation.FeedEntry.TABLE_NAME, // The table to query
+            null, // The columns to return
+            null, // The columns for the WHERE clause
+            null, // The values for the WHERE clause
+            null, // don't group the rows
+            null, // don't filter by row groups
+            null // The sort order
+        );
+    }
 }

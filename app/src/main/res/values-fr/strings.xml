@@ -18,4 +18,5 @@
     <string name="autoupdate">Mises à jour automatique</string>
     <string name="data_update">Mise à jour en données mobile</string>
     <string name="wifi_update">Mise à jour en wifi</string>
+    <string name="existing_feed">Ce flux RSS existe déjà !</string>
 </resources>
