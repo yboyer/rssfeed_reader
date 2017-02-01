@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -34,6 +33,7 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         rssList = (ListView) findViewById(R.id.rssList);
+        //new EntryManager(this).clean();
         this.refreshList();
     }
 
@@ -47,6 +47,9 @@ public class MainActivity extends AppCompatActivity{
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Refresh the ListView of all RSS feeds.
+     */
     public void refreshList() {
         SQLiteDatabase readableDatabase = new RSSFeedDbOpener(this).getReadableDatabase();
         String query = "SELECT * FROM rssfeed;";

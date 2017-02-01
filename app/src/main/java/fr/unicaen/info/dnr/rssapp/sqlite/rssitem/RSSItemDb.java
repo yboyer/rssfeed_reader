@@ -5,10 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
-import fr.unicaen.info.dnr.rssapp.entity.RSSFeed;
 import fr.unicaen.info.dnr.rssapp.entity.RSSItem;
 
 
@@ -48,48 +45,52 @@ public final class RSSItemDb {
     }
 
     /**
-     * List all the rssItems from our database.
+     * Get a RSS item using his id.
      * @param db : database.
-     * @param args : arguments from the where clause.
-     * @return List of Object RSSItem.
+     * @param itemId : id of the RSS Item.
+     * @return : The RSS item.
      */
-    public static List get(SQLiteDatabase db, String[] args) {
-        // TODO
-        // String[] projection = {
-        //         RSSItemDbOperation.ItemEntry._ID,
-        //         RSSItemDbOperation.ItemEntry.COLUMN_NAME_TEXT,
-        //         RSSItemDbOperation.ItemEntry.COLUMN_NAME_DATE
-        // };
-        //
-        // String selection = RSSItemDbOperation.ItemEntry.COLUMN_NAME_TEXT + " = ? AND " + RSSItemDbOperation.ItemEntry.COLUMN_NAME_DATE + " = ?";
-        //
-        // String sortOrder =
-        //         RSSItemDbOperation.ItemEntry.COLUMN_NAME_DATE + " DESC";
-        //
-        // Cursor cursor = db.query(
-        //         RSSItemDbOperation.ItemEntry.TABLE_NAME,                     // The table to query
-        //         projection,                               // The columns to return
-        //         selection,                                // The columns for the WHERE clause
-        //         args,                            // The values for the WHERE clause
-        //         null,                                     // don't group the rows
-        //         null,                                     // don't filter by row groups
-        //         sortOrder                                 // The sort order
-        // );
-        //
-        List itemIds = new ArrayList();
-        // while(cursor.moveToNext()) {
-        //     // long rssItemId = cursor.getLong(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry._ID));
-        //     // String rssItemText = cursor.getString(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry.COLUMN_NAME_TEXT));
-        //     // String rssItemDate = cursor.getString(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry.COLUMN_NAME_DATE));
-        //     // RSSItem rssItem = new RSSItem(rssItemId, rssItemText, rssItemDate);
-        //     // itemIds.add(rssItem);
-        // }
-        // cursor.close();
-        //
-        return itemIds;
+    public static RSSItem getItemById(SQLiteDatabase db, long itemId) {
+        String[] projection = {
+                RSSItemDbOperation.ItemEntry._ID
+        };
+
+        // Find in db if there is a RSS item with same id
+        String selection = RSSItemDbOperation.ItemEntry._ID + " = ?";
+        String[] where = { itemId + "" };
+
+        Cursor cursor = db.query(
+                RSSItemDbOperation.ItemEntry.TABLE_NAME, // The table to query
+                projection, // The columns to return
+                selection, // The columns for the WHERE clause
+                where, // The values for the WHERE clause
+                null, // don't group the rows
+                null, // don't filter by row groups
+                null // The sort order
+        );
+
+        RSSItem item = null;
+
+        // If there is a result, return the RSS feed
+        if (cursor.moveToNext()) {
+            long id = cursor.getLong(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry._ID));
+
+            item = new RSSItem()
+                .setId(id)
+            ;
+        }
+        cursor.close();
+
+        return item;
     }
 
-    public static List<RSSItem> getItemsByFeedId(SQLiteDatabase db, long id) {
+    /**
+     * Get a list of RSS items using a RSS feed id.
+     * @param db : Database.
+     * @param feedId : RSS feed id.
+     * @return : list of RSS items.
+     */
+    public static List<RSSItem> getItemsByFeedId(SQLiteDatabase db, long feedId) {
         String[] projection = {
             RSSItemDbOperation.ItemEntry._ID,
             RSSItemDbOperation.ItemEntry.COLUMN_NAME_PUBDATE,
@@ -99,8 +100,10 @@ public final class RSSItemDb {
             RSSItemDbOperation.ItemEntry.COLUMN_NAME_FEEDID,
         };
         String[] where = {
-                id + ""
+                feedId + ""
         };
+
+        // Find using the id
         String selection = RSSItemDbOperation.ItemEntry.COLUMN_NAME_FEEDID + " = ?";
 
         Cursor cursor = db.query(
@@ -112,6 +115,8 @@ public final class RSSItemDb {
             null, // Row groups filter
             null // The sort order
         );
+
+        // List of RSS items
         List<RSSItem> items = new ArrayList();
         while(cursor.moveToNext()) {
             long rssItemId = cursor.getLong(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry._ID));
@@ -120,6 +125,7 @@ public final class RSSItemDb {
             String rssItemDescription = cursor.getString(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry.COLUMN_NAME_DESCRIPTION));
             String rssItemLink = cursor.getString(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry.COLUMN_NAME_LINK));
             long rssItemFeedId = cursor.getLong(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry.COLUMN_NAME_FEEDID));
+            // Create a RSSItem using the database result
             RSSItem rssItem = new RSSItem()
                     .setId(rssItemId)
                     .setLink(rssItemLink)
@@ -128,50 +134,6 @@ public final class RSSItemDb {
                     .setStringPubDate(rssItemPubDate)
                     .setFeedId(rssItemFeedId);
             items.add(rssItem);
-        }
-        cursor.close();
-
-        return items;
-    }
-
-    /**
-     * Get the feedEntry items
-     * @param db The database to interacti with
-     * @param feedEntry The feed reference
-     * @return The feedEntry items
-     */
-    public static List<RSSItem> getItems(SQLiteDatabase db, RSSFeed feedEntry) {
-        String[] projection = {
-            RSSItemDbOperation.ItemEntry._ID,
-            RSSItemDbOperation.ItemEntry.COLUMN_NAME_CONTENT,
-            RSSItemDbOperation.ItemEntry.COLUMN_NAME_DESCRIPTION,
-            RSSItemDbOperation.ItemEntry.COLUMN_NAME_LINK,
-            RSSItemDbOperation.ItemEntry.COLUMN_NAME_PUBDATE,
-            RSSItemDbOperation.ItemEntry.COLUMN_NAME_FEEDID,
-        };
-
-        String[] where = {
-            feedEntry.getId()+""
-        };
-        String selection = RSSItemDbOperation.ItemEntry.COLUMN_NAME_FEEDID + " = ?";
-
-        Cursor cursor = db.query(
-            RSSItemDbOperation.ItemEntry.TABLE_NAME,
-            projection, // The columns to return
-            selection, // The columns for the WHERE clause
-            where, // The values for the WHERE clause
-            null, // Rows group
-            null, // Row groups filter
-            null // The sort order
-        );
-
-        List items = new ArrayList();
-        while(cursor.moveToNext()) {
-        //     // long rssItemId = cursor.getLong(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry._ID));
-        //     // String rssItemText = cursor.getString(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry.COLUMN_NAME_TEXT));
-        //     // String rssItemDate = cursor.getString(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry.COLUMN_NAME_DATE));
-        //     // RSSItem rssItem = new RSSItem(rssItemId, rssItemText, rssItemDate);
-        //     // items.add(rssItem);
         }
         cursor.close();
 
