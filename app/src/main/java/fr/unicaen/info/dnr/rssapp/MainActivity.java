@@ -14,9 +14,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 
 import fr.unicaen.info.dnr.rssapp.adapter.RSSFeedCursorAdapter;
 import fr.unicaen.info.dnr.rssapp.entity.RSSFeed;
+import fr.unicaen.info.dnr.rssapp.entity.RSSItem;
 import fr.unicaen.info.dnr.rssapp.manager.EntryManager;
 
 
@@ -44,7 +46,7 @@ public class MainActivity extends AppCompatActivity{
             // setting onItemLongClickListener and passing the position to the function
             @Override
             public boolean onItemLongClick(AdapterView<?> adapter, View v, int position, long id) {
-                removeItemFromList(position);
+                removeItemFromList(id);
                 return true;
             }
         });
@@ -54,8 +56,9 @@ public class MainActivity extends AppCompatActivity{
     }
 
     // method to remove list item
-    protected void removeItemFromList(int position) {
-        final int deletePosition = position;
+    protected void removeItemFromList(long id) {
+        final long identifiant = id;
+        final MainActivity main = this;
 
         AlertDialog.Builder alert = new AlertDialog.Builder(
                 MainActivity.this);
@@ -65,7 +68,8 @@ public class MainActivity extends AppCompatActivity{
         alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //code pour remove l'item de la rssList et de la BDD
+                // remove the feed on database
+                new EntryManager(main).remove(identifiant);
             }
         });
         alert.setNegativeButton(android.R.string.no, null);

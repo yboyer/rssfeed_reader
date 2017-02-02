@@ -51,5 +51,6 @@ public class RSSFeedCursorAdapter extends ResourceCursorAdapter {
                 notifyDataSetChanged();
             }
         });
+        notifyDataSetChanged();
     }
 }

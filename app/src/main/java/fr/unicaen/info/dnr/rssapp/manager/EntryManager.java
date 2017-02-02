@@ -23,6 +23,7 @@ import fr.unicaen.info.dnr.rssapp.sqlite.rssitem.RSSItemDbOperation;
  * Represents an entry manager.
  */
 public class EntryManager {
+
     /**
      * The async callback
      */
@@ -48,6 +49,11 @@ public class EntryManager {
         SQLiteDatabase feedDB = new RSSFeedDbOpener(this.context).getWritableDatabase();
         feedDB.execSQL(RSSFeedDbOperation.SQL_DELETE_ENTRIES);
         feedDB.execSQL(RSSFeedDbOperation.SQL_CREATE_ENTRIES);
+    }
+
+    public void remove(long id) {
+        SQLiteDatabase feedDB = new RSSFeedDbOpener(this.context).getWritableDatabase();
+        RSSFeedDb.delete(feedDB,id);
     }
 
     /**
