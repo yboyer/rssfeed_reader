@@ -1,6 +1,7 @@
 package fr.unicaen.info.dnr.rssapp.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.util.SparseBooleanArray;
 import android.view.View;
@@ -9,7 +10,9 @@ import android.widget.ResourceCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import fr.unicaen.info.dnr.rssapp.MainActivity;
 import fr.unicaen.info.dnr.rssapp.R;
+import fr.unicaen.info.dnr.rssapp.RssItemActivity;
 
 
 /**

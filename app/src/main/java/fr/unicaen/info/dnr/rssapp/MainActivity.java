@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import fr.unicaen.info.dnr.rssapp.adapter.RSSFeedCursorAdapter;
 import fr.unicaen.info.dnr.rssapp.entity.RSSFeed;
@@ -70,6 +71,8 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(DialogInterface dialog, int which) {
                 // remove the feed on database
                 new EntryManager(main).remove(identifiant);
+                Toast.makeText(main, "L'item à été supprimé", Toast.LENGTH_SHORT).show();
+                refreshList();
             }
         });
         alert.setNegativeButton(android.R.string.no, null);
