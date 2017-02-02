@@ -1,10 +1,17 @@
 package fr.unicaen.info.dnr.rssapp.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.support.v7.app.AlertDialog;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Patterns;
 import android.util.SparseBooleanArray;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ResourceCursorAdapter;
 import android.widget.TextView;
@@ -13,6 +20,7 @@ import android.widget.Toast;
 import fr.unicaen.info.dnr.rssapp.MainActivity;
 import fr.unicaen.info.dnr.rssapp.R;
 import fr.unicaen.info.dnr.rssapp.RssItemActivity;
+import fr.unicaen.info.dnr.rssapp.manager.EntryManager;
 
 
 /**
