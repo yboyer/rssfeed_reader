@@ -1,5 +1,6 @@
 package fr.unicaen.info.dnr.rssapp;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import java.util.List;
 
 import fr.unicaen.info.dnr.rssapp.entity.RSSFeed;
 import fr.unicaen.info.dnr.rssapp.entity.RSSItem;
+import fr.unicaen.info.dnr.rssapp.manager.Connectivity;
 import fr.unicaen.info.dnr.rssapp.manager.EntryManager;
 
 public class RssItemActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
@@ -38,7 +40,19 @@ public class RssItemActivity extends AppCompatActivity implements SwipeRefreshLa
         this.feed = em.getFeed(feedId);
         setTitle(this.feed.getName());
 
-        refreshList();
+        SharedPreferences data = getSharedPreferences(PreferencesActivity.PREFERENCE_KEY, 0);
+        boolean autoupdate = data.getBoolean(PreferencesActivity.AUTOUPDATE_KEY, PreferencesActivity.AUTOUPDATE_DEFAULT);
+        boolean wifiUpdate = data.getBoolean(PreferencesActivity.WIFIUPDATE_KEY, PreferencesActivity.WIFIUPDATE_DEFAULT);
+        boolean dataUpdate = data.getBoolean(PreferencesActivity.DATAUPDATE_KEY, PreferencesActivity.DATAUPDATE_DEFAULT);
+
+        wifiUpdate = Connectivity.isConnectedWifi(this) && wifiUpdate;
+        dataUpdate = Connectivity.isConnectedMobile(this) && dataUpdate;
+
+        if (autoupdate && (wifiUpdate || dataUpdate)) {
+            updateList();
+        } else {
+            refreshList();
+        }
     }
 
     /**
