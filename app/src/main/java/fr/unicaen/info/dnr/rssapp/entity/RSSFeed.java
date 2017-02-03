@@ -87,15 +87,20 @@ public class RSSFeed {
     }
 
     /**
-     * Get the last update timestamp
-     * @return The last update timestamp
+     * Get the elapsed time in seconds from the last update
+     * @return The elapsed time
      */
-    public long getLastUpdate() {
-        return this.lastupdate;
+    public long getElapsedTime() {
+        return (System.currentTimeMillis() / 1000) - this.lastupdate;
     }
 
+    /**
+     * Get human readable last update
+     * @param context The context
+     * @return The last update
+     */
     public String getHumanLastUpdate(Context context) {
-        long elapsedTime = (System.currentTimeMillis() / 1000) - getLastUpdate();
+        long elapsedTime = getElapsedTime();
 
         long minute = 60;
         long hour = 60*minute;
