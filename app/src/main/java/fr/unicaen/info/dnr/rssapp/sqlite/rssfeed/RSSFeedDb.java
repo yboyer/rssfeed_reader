@@ -26,6 +26,7 @@ public final class RSSFeedDb {
         ContentValues values = new ContentValues();
         values.put(RSSFeedDbOperation.FeedEntry.COLUMN_NAME_NAME, item.getName());
         values.put(RSSFeedDbOperation.FeedEntry.COLUMN_NAME_URL, item.getUrl());
+        values.put(RSSFeedDbOperation.FeedEntry.COLUMN_NAME_LASTUPDATE, System.currentTimeMillis() / 1000);
 
         Log.d("RSSFeedDb:adding", item.toString());
 
@@ -41,7 +42,7 @@ public final class RSSFeedDb {
         ContentValues values = new ContentValues();
         values.put(RSSFeedDbOperation.FeedEntry.COLUMN_NAME_NAME, feedEntry.getName());
         values.put(RSSFeedDbOperation.FeedEntry.COLUMN_NAME_URL, feedEntry.getUrl());
-        //values.put(RSSFeedDbOperation.FeedEntry.COLUMN_NAME_LASTUPDATE, System.currentTimeMillis() / 1000);
+        values.put(RSSFeedDbOperation.FeedEntry.COLUMN_NAME_LASTUPDATE, System.currentTimeMillis() / 1000);
 
         db.update(
             RSSFeedDbOperation.FeedEntry.TABLE_NAME,
@@ -73,6 +74,7 @@ public final class RSSFeedDb {
             RSSFeedDbOperation.FeedEntry._ID,
             RSSFeedDbOperation.FeedEntry.COLUMN_NAME_NAME,
             RSSFeedDbOperation.FeedEntry.COLUMN_NAME_URL,
+            RSSFeedDbOperation.FeedEntry.COLUMN_NAME_LASTUPDATE
         };
 
         // Find in db if there is a RSS feed with same id
@@ -96,8 +98,9 @@ public final class RSSFeedDb {
             long id = cursor.getLong(cursor.getColumnIndexOrThrow(RSSFeedDbOperation.FeedEntry._ID));
             String name = cursor.getString(cursor.getColumnIndexOrThrow(RSSFeedDbOperation.FeedEntry.COLUMN_NAME_NAME));
             String url = cursor.getString(cursor.getColumnIndexOrThrow(RSSFeedDbOperation.FeedEntry.COLUMN_NAME_URL));
+            long lastupdate = cursor.getLong(cursor.getColumnIndexOrThrow(RSSFeedDbOperation.FeedEntry.COLUMN_NAME_LASTUPDATE));
 
-            feed = new RSSFeed(id, name, url);
+            feed = new RSSFeed(id, name, url, lastupdate);
         }
         cursor.close();
 
@@ -116,6 +119,7 @@ public final class RSSFeedDb {
                 RSSFeedDbOperation.FeedEntry._ID,
                 RSSFeedDbOperation.FeedEntry.COLUMN_NAME_NAME,
                 RSSFeedDbOperation.FeedEntry.COLUMN_NAME_URL,
+                RSSFeedDbOperation.FeedEntry.COLUMN_NAME_LASTUPDATE,
         };
 
         // Find in database if there is a RSS feed with same name or same url
@@ -139,8 +143,9 @@ public final class RSSFeedDb {
             long id = cursor.getLong(cursor.getColumnIndexOrThrow(RSSFeedDbOperation.FeedEntry._ID));
             String name = cursor.getString(cursor.getColumnIndexOrThrow(RSSFeedDbOperation.FeedEntry.COLUMN_NAME_NAME));
             String url = cursor.getString(cursor.getColumnIndexOrThrow(RSSFeedDbOperation.FeedEntry.COLUMN_NAME_URL));
+            long lastupdate = cursor.getLong(cursor.getColumnIndexOrThrow(RSSFeedDbOperation.FeedEntry.COLUMN_NAME_LASTUPDATE));
 
-            feed = new RSSFeed(id, name, url);
+            feed = new RSSFeed(id, name, url, lastupdate);
         }
         cursor.close();
 
@@ -168,7 +173,9 @@ public final class RSSFeedDb {
             long id = cursor.getLong(cursor.getColumnIndexOrThrow(RSSFeedDbOperation.FeedEntry._ID));
             String name = cursor.getString(cursor.getColumnIndexOrThrow(RSSFeedDbOperation.FeedEntry.COLUMN_NAME_NAME));
             String url = cursor.getString(cursor.getColumnIndexOrThrow(RSSFeedDbOperation.FeedEntry.COLUMN_NAME_URL));
-            feeds.add(new RSSFeed(id, name, url));
+            long lastupdate = cursor.getLong(cursor.getColumnIndexOrThrow(RSSFeedDbOperation.FeedEntry.COLUMN_NAME_LASTUPDATE));
+
+            feeds.add(new RSSFeed(id, name, url, lastupdate));
         }
         cursor.close();
         return feeds;

@@ -29,4 +29,7 @@
     <string name="errorParsingMsg">Impossible de détecter le flux RSS de ce site</string>
     <string name="errorUnknownHostTitle">Hôte inconnu</string>
     <string name="errorUnknownHostMsg">Le site rentré n\'existe pas</string>
+    <string name="hour">heure</string>
+    <string name="second">seconde</string>
+    <string name="last_sync">Dernière mise à jour</string>
 </resources>

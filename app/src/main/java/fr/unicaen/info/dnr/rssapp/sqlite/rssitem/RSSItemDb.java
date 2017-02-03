@@ -23,6 +23,7 @@ public final class RSSItemDb {
     public static long add(SQLiteDatabase db, RSSItem item) {
         ContentValues values = new ContentValues();
         values.put(RSSItemDbOperation.ItemEntry.COLUMN_NAME_DESCRIPTION, item.getDescription());
+        values.put(RSSItemDbOperation.ItemEntry.COLUMN_NAME_TITLE, item.getTitle());
         values.put(RSSItemDbOperation.ItemEntry.COLUMN_NAME_CONTENT, item.getContent());
         values.put(RSSItemDbOperation.ItemEntry.COLUMN_NAME_LINK, item.getLink());
         values.put(RSSItemDbOperation.ItemEntry.COLUMN_NAME_PUBDATE, item.getStringPubDate());
@@ -94,6 +95,7 @@ public final class RSSItemDb {
         String[] projection = {
             RSSItemDbOperation.ItemEntry._ID,
             RSSItemDbOperation.ItemEntry.COLUMN_NAME_PUBDATE,
+            RSSItemDbOperation.ItemEntry.COLUMN_NAME_TITLE,
             RSSItemDbOperation.ItemEntry.COLUMN_NAME_CONTENT,
             RSSItemDbOperation.ItemEntry.COLUMN_NAME_DESCRIPTION,
             RSSItemDbOperation.ItemEntry.COLUMN_NAME_LINK,
@@ -119,20 +121,22 @@ public final class RSSItemDb {
         // List of RSS items
         List<RSSItem> items = new ArrayList();
         while(cursor.moveToNext()) {
-            long rssItemId = cursor.getLong(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry._ID));
-            String rssItemPubDate = cursor.getString(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry.COLUMN_NAME_PUBDATE));
-            String rssItemContent = cursor.getString(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry.COLUMN_NAME_CONTENT));
-            String rssItemDescription = cursor.getString(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry.COLUMN_NAME_DESCRIPTION));
-            String rssItemLink = cursor.getString(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry.COLUMN_NAME_LINK));
-            long rssItemFeedId = cursor.getLong(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry.COLUMN_NAME_FEEDID));
+            long id = cursor.getLong(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry._ID));
+            String pubDate = cursor.getString(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry.COLUMN_NAME_PUBDATE));
+            String title = cursor.getString(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry.COLUMN_NAME_TITLE));
+            String content = cursor.getString(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry.COLUMN_NAME_CONTENT));
+            String description = cursor.getString(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry.COLUMN_NAME_DESCRIPTION));
+            String link = cursor.getString(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry.COLUMN_NAME_LINK));
+            long feedid = cursor.getLong(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry.COLUMN_NAME_FEEDID));
             // Create a RSSItem using the database result
             RSSItem rssItem = new RSSItem()
-                    .setId(rssItemId)
-                    .setLink(rssItemLink)
-                    .setDescription(rssItemDescription)
-                    .setContent(rssItemContent)
-                    .setStringPubDate(rssItemPubDate)
-                    .setFeedId(rssItemFeedId);
+                    .setId(id)
+                    .setLink(link)
+                    .setTitle(title)
+                    .setDescription(description)
+                    .setContent(content)
+                    .setStringPubDate(pubDate)
+                    .setFeedId(feedid);
             items.add(rssItem);
         }
         cursor.close();

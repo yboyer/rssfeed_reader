@@ -29,4 +29,8 @@
     <string name="errorParsingMsg">Impossible to detect a RSS feed in the website</string>
     <string name="errorUnknownHostTitle">Unknown host</string>
     <string name="errorUnknownHostMsg">The website doesn\'t exist</string>
+    <string name="hour">hour</string>
+    <string name="minute" translatable="false">minute</string>
+    <string name="second">second</string>
+    <string name="last_sync">Last sync</string>
 </resources>
