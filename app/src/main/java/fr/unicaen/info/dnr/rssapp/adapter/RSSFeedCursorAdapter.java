@@ -26,17 +26,32 @@ import fr.unicaen.info.dnr.rssapp.manager.EntryManager;
 
 
 /**
- * Created by lenaic on 25/01/2017.
+ * Created by lenaic and raphael on 25/01/2017.
+ *
+ * Represent our curstom cursor adapter
  */
 
 public class RSSFeedCursorAdapter extends ResourceCursorAdapter {
 
     private AlertDialog addFeedDialog;
 
+    /**
+     * Constructor of our custom cursor adapter
+     * @param context The context
+     * @param layout The layout
+     * @param cursor The cursor
+     * @param flags The flags
+     */
     public RSSFeedCursorAdapter(Context context, int layout, Cursor cursor, int flags) {
         super(context, layout, cursor, flags);
     }
 
+    /**
+     * Represent the item view
+     * @param view The view
+     * @param context The context
+     * @param cursor The cursor
+     */
     @Override
     public void bindView(final View view, final Context context, Cursor cursor) {
         final TextView name = (TextView) view.findViewById(R.id.name);
