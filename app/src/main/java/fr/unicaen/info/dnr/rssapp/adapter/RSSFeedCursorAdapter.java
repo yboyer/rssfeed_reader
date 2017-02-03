@@ -46,16 +46,13 @@ public class RSSFeedCursorAdapter extends ResourceCursorAdapter {
         url.setText(cursor.getString(cursor.getColumnIndex("url")));
 
         final Cursor cursor1 = cursor;
-        long id = cursor.getLong(cursor.getColumnIndex("_id"));
+        final long identifiant = cursor.getLong(cursor.getColumnIndex("_id"));
+        System.out.println(identifiant+"teub");
 
         ImageView edit = (ImageView) view.findViewById(R.id.edit);
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Integer position = (Integer) v.getTag();
-                //ouvrir un formulaire de modification de l'item de la rssList a position
-                //puis valider ces changements en BDD
-                notifyDataSetChanged();
 
                 // Get the dialog layout
                 View promptView = LayoutInflater.from(context).inflate(R.layout.dialog_modify, null);
@@ -63,8 +60,8 @@ public class RSSFeedCursorAdapter extends ResourceCursorAdapter {
                 final EditText dialogFeedName = (EditText) promptView.findViewById(R.id.modifyDialogFeedName);
                 final EditText dialogFeedUrl = (EditText) promptView.findViewById(R.id.modifyDialogFeedUrl);
 
-                dialogFeedName.setText(cursor1.getString(cursor1.getColumnIndex("name")));
-                dialogFeedUrl.setText(cursor1.getString(cursor1.getColumnIndex("url")));
+                dialogFeedName.setText(name.getText());
+                dialogFeedUrl.setText(url.getText());
 
                 // Watch text events
                 TextWatcher textWatcher = new TextWatcher() {
@@ -92,20 +89,27 @@ public class RSSFeedCursorAdapter extends ResourceCursorAdapter {
                         .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
-                                String name = dialogFeedName.getText().toString();
-                                String url = dialogFeedUrl.getText().toString();
+                                String modifiedName = dialogFeedName.getText().toString();
+                                String modifiedUrl = dialogFeedUrl.getText().toString();
 
                                 // Add http if the url does not contains it
-                                if (!url.startsWith("http")) {
-                                    url = "http://" + url;
+                                if (!modifiedUrl.startsWith("http")) {
+                                    modifiedUrl = "http://" + modifiedUrl;
                                 }
 
                                 EntryManager em = new EntryManager(context);
-                                RSSFeed feed = em.getFeed(id);
+                                RSSFeed feed = em.getFeed(identifiant);
+                                feed.setName(modifiedName);
+                                feed.setUrl(modifiedUrl);
+                                System.out.println(identifiant+"");
                                 // Modify feed in DB
                                 em.update(feed);
                                 Toast.makeText(context, R.string.update_success, Toast.LENGTH_SHORT).show();
                                 notifyDataSetChanged();
+
+                                if(context instanceof MainActivity){
+                                    ((MainActivity)context).refreshList();
+                                }
                             }
                         })
                         .setNegativeButton(android.R.string.cancel, null);
@@ -114,20 +118,11 @@ public class RSSFeedCursorAdapter extends ResourceCursorAdapter {
                 addFeedDialog.show();
                 // Disable the positive button
                 addFeedDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+                notifyDataSetChanged();
 
             }
         });
-        /*
-        ImageView delete = (ImageView) view.findViewById(R.id.delete);
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context, "click delete", Toast.LENGTH_SHORT).show();
-                Integer position = (Integer) v.getTag();
-                //remove l'item de la rssList a position et dans la BDD
-                notifyDataSetChanged();
-            }
-        });*/
+
         notifyDataSetChanged();
     }
 }
