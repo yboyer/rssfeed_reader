@@ -11,7 +11,8 @@ public class RSSFeedDbOperation {
         "CREATE TABLE " + FeedEntry.TABLE_NAME + " (" +
             FeedEntry._ID + " INTEGER PRIMARY KEY," +
             FeedEntry.COLUMN_NAME_NAME + " TEXT," +
-            FeedEntry.COLUMN_NAME_URL + " TEXT" +
+            FeedEntry.COLUMN_NAME_URL + " TEXT," +
+            FeedEntry.COLUMN_NAME_LASTUPDATE + " INTEGER" +
         ")";
 
     public static String SQL_DELETE_ENTRIES =
@@ -22,5 +23,6 @@ public class RSSFeedDbOperation {
         public static final String TABLE_NAME = "rssfeed";
         public static final String COLUMN_NAME_NAME = "name";
         public static final String COLUMN_NAME_URL = "url";
+        public static final String COLUMN_NAME_LASTUPDATE = "lastupdate";
     }
 }

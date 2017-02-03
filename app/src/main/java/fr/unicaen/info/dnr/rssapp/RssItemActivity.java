@@ -87,6 +87,8 @@ public class RssItemActivity extends AppCompatActivity implements SwipeRefreshLa
             new String[] {"link", "date", "description"},
             new int[] {R.id.link, R.id.name, R.id.description }
         ));
+
+        getSupportActionBar().setSubtitle(this.feed.getHumanLastUpdate(this));
     }
 
     @Override

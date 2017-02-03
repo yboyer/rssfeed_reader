@@ -1,7 +1,10 @@
 package fr.unicaen.info.dnr.rssapp.entity;
 
-import java.util.ArrayList;
+import android.content.Context;
+
 import java.util.List;
+
+import fr.unicaen.info.dnr.rssapp.R;
 
 /**
  * Represents an RSS feed.
@@ -10,17 +13,19 @@ public class RSSFeed {
     private long id;
     private String name;
     private String url;
+    private long lastupdate;
     private List<RSSItem> items;
 
 
-    public RSSFeed(long id, String name, String url) {
+    public RSSFeed(long id, String name, String url, long lastupdate) {
         this.id = id;
         this.name = name;
         this.url = url;
+        this.lastupdate = lastupdate;
     }
 
     public RSSFeed(String name, String url) {
-        this(-1, name, url);
+        this(-1, name, url, 0);
     }
 
     public RSSFeed(long id) {
@@ -79,6 +84,36 @@ public class RSSFeed {
     public RSSFeed setUrl(String url) {
         this.url = url;
         return this;
+    }
+
+    /**
+     * Get the last update timestamp
+     * @return The last update timestamp
+     */
+    public long getLastUpdate() {
+        return this.lastupdate;
+    }
+
+    public String getHumanLastUpdate(Context context) {
+        long elapsedTime = (System.currentTimeMillis() / 1000) - getLastUpdate();
+
+        long minute = 60;
+        long hour = 60*minute;
+        long time;
+        String sufix;
+
+        if (elapsedTime >= hour) {
+            time = elapsedTime / hour;
+            sufix = context.getResources().getString(R.string.hour);
+        } else  if (elapsedTime >= minute) {
+            time = elapsedTime / minute;
+            sufix = context.getResources().getString(R.string.minute);
+        } else {
+            time = elapsedTime;
+            sufix = context.getResources().getString(R.string.second);
+        }
+
+        return context.getResources().getString(R.string.last_sync) + ": " + time + " " + sufix + (time > 1 ? "s" : "");
     }
 
     /**
