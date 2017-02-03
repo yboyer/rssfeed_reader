@@ -47,7 +47,6 @@ public class RSSFeedCursorAdapter extends ResourceCursorAdapter {
 
         final Cursor cursor1 = cursor;
         final long identifiant = cursor.getLong(cursor.getColumnIndex("_id"));
-        System.out.println(identifiant+"teub");
 
         ImageView edit = (ImageView) view.findViewById(R.id.edit);
         edit.setOnClickListener(new View.OnClickListener() {
@@ -101,7 +100,6 @@ public class RSSFeedCursorAdapter extends ResourceCursorAdapter {
                                 RSSFeed feed = em.getFeed(identifiant);
                                 feed.setName(modifiedName);
                                 feed.setUrl(modifiedUrl);
-                                System.out.println(identifiant+"");
                                 // Modify feed in DB
                                 em.update(feed);
                                 Toast.makeText(context, R.string.update_success, Toast.LENGTH_SHORT).show();

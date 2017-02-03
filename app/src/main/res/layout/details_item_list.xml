@@ -24,11 +24,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10px"
-        android:textSize="18dp"
+        android:textSize="12dp"
         android:textColor="@color/colorAccent"
         android:textStyle="bold"
         android:padding="7px"
-        android:autoLink="web"
         android:id="@+id/link"/>
 
     <TextView

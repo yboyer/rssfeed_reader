@@ -1,10 +1,14 @@
 package fr.unicaen.info.dnr.rssapp;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
@@ -37,6 +41,14 @@ public class RssItemActivity extends AppCompatActivity implements SwipeRefreshLa
         this.em = new EntryManager(this);
 
         this.rssItemList = (ListView) findViewById(R.id.rssItemList);
+
+        this.rssItemList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                HashMap<String, String> item = (HashMap<String, String>) rssItemList.getItemAtPosition(position);
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(item.get("link"))));
+            }
+        });
+
         this.feed = em.getFeed(feedId);
         setTitle(this.feed.getName());
 
@@ -85,7 +97,6 @@ public class RssItemActivity extends AppCompatActivity implements SwipeRefreshLa
             element.put("title", items.get(i).getTitle());
             element.put("link", items.get(i).getLink());
 
-            System.out.println(items.get(i).getTitle());
             // Format the publication date
             if (!items.get(i).getStringPubDate().equals("")) {
                 element.put("date", DateFormat.getDateTimeInstance().format(items.get(i).getPubDate()) + "");
