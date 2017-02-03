@@ -33,6 +33,25 @@ public final class RSSFeedDb {
     }
 
     /**
+     * Update the RSSFeed item
+     * @param db The database
+     * @param feedEntry The feed to update
+     */
+    public static void update(SQLiteDatabase db, RSSFeed feedEntry) {
+        ContentValues values = new ContentValues();
+        values.put(RSSFeedDbOperation.FeedEntry.COLUMN_NAME_NAME, feedEntry.getName());
+        values.put(RSSFeedDbOperation.FeedEntry.COLUMN_NAME_URL, feedEntry.getUrl());
+        values.put(RSSFeedDbOperation.FeedEntry.COLUMN_NAME_LASTUPDATE, System.currentTimeMillis() / 1000);
+
+        db.update(
+            RSSFeedDbOperation.FeedEntry.TABLE_NAME,
+            values,
+            RSSFeedDbOperation.FeedEntry._ID + " = ?",
+            new String[]{ feedEntry.getId() + "" }
+        );
+    }
+
+    /**
      * Delete a link using an id in our database.
      * @param db : database.
      * @param id : link identifier.

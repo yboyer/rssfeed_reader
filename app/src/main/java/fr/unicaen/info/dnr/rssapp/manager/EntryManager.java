@@ -41,7 +41,6 @@ public class EntryManager {
      * Clean the database.
      */
     public void clean() {
-
         SQLiteDatabase itemDB = new RSSItemDbOpener(this.context).getWritableDatabase();
         itemDB.execSQL(RSSItemDbOperation.SQL_DELETE_ENTRIES);
         itemDB.execSQL(RSSItemDbOperation.SQL_CREATE_ENTRIES);
@@ -63,10 +62,10 @@ public class EntryManager {
      * Fill the database with default RSS feeds.
      */
     public void fill() {
-        //clean();
-        //add(new RSSFeed("Le monde", "http://lesclesdedemain.lemonde.fr/screens/RSS/sw_getFeed.php?idTheme=HOME"));
-        //add(new RSSFeed("Libération", "http://rss.liberation.fr/rss/latest/"));
-        //add(new RSSFeed("BBC", "http://feeds.bbci.co.uk/news/video_and_audio/technology/rss.xml"));
+        clean();
+        insert(new RSSFeed("Le monde", "http://lesclesdedemain.lemonde.fr/screens/RSS/sw_getFeed.php?idTheme=HOME"));
+        insert(new RSSFeed("Libération", "http://rss.liberation.fr/rss/latest/"));
+        insert(new RSSFeed("BBC", "http://feeds.bbci.co.uk/news/video_and_audio/technology/rss.xml"));
     }
 
     /**
@@ -140,6 +139,16 @@ public class EntryManager {
     }
 
     /**
+     * Update a feed
+     * @param rssFeed The feed to update
+     */
+    public void update(RSSFeed rssFeed) {
+        SQLiteDatabase feedDB = new RSSFeedDbOpener(this.context).getWritableDatabase();
+        RSSFeedDb.update(feedDB, rssFeed);
+        feedDB.close();
+    }
+
+    /**
      * Update a feed and its items on database
      * @param rssFeed The RSS feed
      * @param callback The callback
@@ -151,6 +160,8 @@ public class EntryManager {
             final SQLiteDatabase feedDB = new RSSFeedDbOpener(this.context).getWritableDatabase();
             feedId = RSSFeedDb.add(feedDB, rssFeed);
             feedDB.close();
+        } else {
+            update(rssFeed);
         }
 
         // For the future uses
