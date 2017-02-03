@@ -42,7 +42,7 @@ public class RssItemActivity extends AppCompatActivity implements SwipeRefreshLa
     }
 
     /**
-     * Retrieve the the items and refresh the list
+     * Retrieve items and refresh the list
      */
     public void updateList() {
         mSwipeRefreshLayout.setRefreshing(true);
@@ -50,10 +50,10 @@ public class RssItemActivity extends AppCompatActivity implements SwipeRefreshLa
             @Override
             public void processFinish() {
                 mSwipeRefreshLayout.setRefreshing(false);
+                feed = em.getFeed(feed.getId());
                 refreshList();
             }
         });
-        this.feed = em.getFeed(feed.getId());
     }
 
     /**
@@ -68,7 +68,7 @@ public class RssItemActivity extends AppCompatActivity implements SwipeRefreshLa
 
             element.put("link", items.get(i).getLink());
             // Format the publication date
-            if (items.get(i).getStringPubDate() != "") {
+            if (!items.get(i).getStringPubDate().equals("")) {
                 element.put("date", DateFormat.getDateTimeInstance().format(items.get(i).getPubDate()) + "");
             }
             // Checking the current Android version and parse the HTML code
@@ -85,7 +85,7 @@ public class RssItemActivity extends AppCompatActivity implements SwipeRefreshLa
             adapterList,
             R.layout.details_item_list,
             new String[] {"link", "date", "description"},
-            new int[] {R.id.link, R.id.date, R.id.description }
+            new int[] {R.id.link, R.id.name, R.id.description }
         ));
     }
 

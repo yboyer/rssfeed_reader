@@ -24,4 +24,9 @@
     <string name="delete_success">The item has been successfully deleted</string>
     <string name="update_success">The item has been successfully updated</string>
     <string name="delete">Delete</string>
+    <string name="errorDefaultMsg">Error while reaching RSS Feed</string>
+    <string name="errorParsingTitle">Impossible to detect the feed</string>
+    <string name="errorParsingMsg">Impossible to detect a RSS feed in the website</string>
+    <string name="errorUnknownHostTitle">Unknown host</string>
+    <string name="errorUnknownHostMsg">The website doesn\'t exist</string>
 </resources>

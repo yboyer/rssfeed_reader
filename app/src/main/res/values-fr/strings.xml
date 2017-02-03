@@ -24,4 +24,9 @@
     <string name="delete_success">L\'item à été supprimé avec succès</string>
     <string name="update_success">L\'item à été modifié avec succès</string>
     <string name="delete">Suppression</string>
+    <string name="errorDefaultMsg">Erreur lors de la récupération du Flux RSS</string>
+    <string name="errorParsingTitle">Impossible de détecter le flux</string>
+    <string name="errorParsingMsg">Impossible de détecter le flux RSS de ce site</string>
+    <string name="errorUnknownHostTitle">Hôte inconnu</string>
+    <string name="errorUnknownHostMsg">Le site rentré n\'existe pas</string>
 </resources>
