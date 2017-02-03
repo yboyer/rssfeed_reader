@@ -48,7 +48,9 @@ public class RssItemActivity extends AppCompatActivity implements SwipeRefreshLa
         wifiUpdate = Connectivity.isConnectedWifi(this) && wifiUpdate;
         dataUpdate = Connectivity.isConnectedMobile(this) && dataUpdate;
 
-        if (autoupdate && (wifiUpdate || dataUpdate)) {
+        boolean moreThan15Minutes = (feed.getElapsedTime() / 60) > 15;
+
+        if (autoupdate && (wifiUpdate || dataUpdate) && moreThan15Minutes) {
             updateList();
         } else {
             refreshList();
