@@ -14,9 +14,7 @@ import java.util.List;
 import fr.unicaen.info.dnr.rssapp.entity.RSSFeed;
 import fr.unicaen.info.dnr.rssapp.entity.RSSItem;
 
-/**
- * Represents an async feed retriever
- */
+
 public class RetrieveFeedTask extends AsyncTask<RSSFeed, Void, List<RSSItem>>{
     /**
      * The async callback

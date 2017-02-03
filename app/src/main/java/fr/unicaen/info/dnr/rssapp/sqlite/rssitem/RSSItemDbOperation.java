@@ -3,9 +3,7 @@ package fr.unicaen.info.dnr.rssapp.sqlite.rssitem;
 import android.provider.BaseColumns;
 import fr.unicaen.info.dnr.rssapp.sqlite.rssfeed.RSSFeedDbOperation;
 
-/**
- * Created by lenaic on 11/01/2017.
- */
+
 public class RSSItemDbOperation {
 
     public static String SQL_CREATE_ENTRIES =

@@ -2,9 +2,7 @@ package fr.unicaen.info.dnr.rssapp.sqlite.rssfeed;
 
 import android.provider.BaseColumns;
 
-/**
- * Created by lenaic on 11/01/2017.
- */
+
 public class RSSFeedDbOperation {
 
     public static String SQL_CREATE_ENTRIES =

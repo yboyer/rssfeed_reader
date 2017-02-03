@@ -26,11 +26,8 @@ import fr.unicaen.info.dnr.rssapp.manager.EntryManager;
 
 
 /**
- * Created by lenaic and raphael on 25/01/2017.
- *
  * Represent our curstom cursor adapter
  */
-
 public class RSSFeedCursorAdapter extends ResourceCursorAdapter {
 
     private AlertDialog addFeedDialog;

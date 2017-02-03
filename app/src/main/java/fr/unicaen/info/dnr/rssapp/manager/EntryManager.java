@@ -19,9 +19,7 @@ import fr.unicaen.info.dnr.rssapp.sqlite.rssitem.RSSItemDb;
 import fr.unicaen.info.dnr.rssapp.sqlite.rssitem.RSSItemDbOpener;
 import fr.unicaen.info.dnr.rssapp.sqlite.rssitem.RSSItemDbOperation;
 
-/**
- * Represents an entry manager.
- */
+
 public class EntryManager {
 
     /**

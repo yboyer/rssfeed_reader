@@ -50,6 +50,11 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
+        EntryManager em = new EntryManager(this);
+        RSSFeed feedEntry = new RSSFeed("BBC World news", "http://feeds.bbci.co.uk/news/world/rss.xml");
+        if (em.findFeed(feedEntry) == null) {
+            em.insert(feedEntry);
+        }
         refreshList();
     }
 

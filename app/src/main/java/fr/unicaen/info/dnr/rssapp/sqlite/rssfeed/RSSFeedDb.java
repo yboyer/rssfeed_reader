@@ -11,9 +11,6 @@ import java.util.List;
 import fr.unicaen.info.dnr.rssapp.entity.RSSFeed;
 
 
-/**
- * Created by lenaic on 11/01/2017.
- */
 public final class RSSFeedDb {
 
     /**
