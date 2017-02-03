@@ -53,6 +53,7 @@ public class RetrieveFeedTask extends AsyncTask<RSSFeed, Void, List<RSSItem>>{
                 }
 
                 list.add(new RSSItem()
+                    .setTitle(entry.getTitle())
                     .setDescription(entry.getDescription().getValue())
                     .setPubDate(date)
                     .setContent(entry.getContents().toString())

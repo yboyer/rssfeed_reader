@@ -11,6 +11,7 @@ public class RSSItem {
     private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
     private long id;
     private Date pubDate;
+    private String title;
     private String content;
     private String description;
     private String link;
@@ -32,6 +33,24 @@ public class RSSItem {
      */
     public long getId() {
         return id;
+    }
+
+    /**
+     * Get the title
+     * @return The title
+     */
+    public String getTitle() {
+        return this.title;
+    }
+
+    /**
+     * Set the title
+     * @param title The title
+     * @return This
+     */
+    public RSSItem setTitle(String title) {
+        this.title = title;
+        return this;
     }
 
     /**
