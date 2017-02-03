@@ -1,3 +1,6 @@
+GROUPE: Erfani Raphaël, Couellan Lénaïc, Boyer Yoann
+
+
 Bienvenue dans l'application RSS Reader ! Guide d'utilisation.
 
 - Menu : Vous avez la possibilité d'ajouter un flux en cliquant sur l'icône d'ajout du menu (il est nécessaire de renseigner un nom et un url valide de flux rss) et également de modifier les paramètres utilisateurs pour les options de mise à jour de l'application via l'option Settings du menu qui ouvre la page des préférences.
