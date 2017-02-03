@@ -80,7 +80,10 @@ public class RssItemActivity extends AppCompatActivity implements SwipeRefreshLa
         for(int i = 0 ; i < items.size() ; i++) {
             element = new HashMap();
 
+            element.put("title", items.get(i).getTitle());
             element.put("link", items.get(i).getLink());
+
+            System.out.println(items.get(i).getTitle());
             // Format the publication date
             if (!items.get(i).getStringPubDate().equals("")) {
                 element.put("date", DateFormat.getDateTimeInstance().format(items.get(i).getPubDate()) + "");
@@ -98,8 +101,8 @@ public class RssItemActivity extends AppCompatActivity implements SwipeRefreshLa
             this,
             adapterList,
             R.layout.details_item_list,
-            new String[] {"link", "date", "description"},
-            new int[] {R.id.link, R.id.name, R.id.description }
+            new String[] {"title","link", "date", "description"},
+            new int[] {R.id.itemTitle, R.id.link, R.id.name, R.id.description }
         ));
 
         getSupportActionBar().setSubtitle(this.feed.getHumanLastUpdate(this));
