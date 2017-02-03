@@ -45,19 +45,19 @@ public final class RSSItemDb {
     }
 
     /**
-     * Get a RSS item using his id.
+     * Get a RSS item using his link.
      * @param db : database.
-     * @param itemId : id of the RSS Item.
+     * @param link : link of the RSS Item.
      * @return : The RSS item.
      */
-    public static RSSItem getItemById(SQLiteDatabase db, long itemId) {
+    public static RSSItem getItemByLink(SQLiteDatabase db, String link) {
         String[] projection = {
-                RSSItemDbOperation.ItemEntry._ID
+                RSSItemDbOperation.ItemEntry.COLUMN_NAME_LINK
         };
 
         // Find in db if there is a RSS item with same id
-        String selection = RSSItemDbOperation.ItemEntry._ID + " = ?";
-        String[] where = { itemId + "" };
+        String selection = RSSItemDbOperation.ItemEntry.COLUMN_NAME_LINK + " = ?";
+        String[] where = { link };
 
         Cursor cursor = db.query(
                 RSSItemDbOperation.ItemEntry.TABLE_NAME, // The table to query
@@ -73,10 +73,10 @@ public final class RSSItemDb {
 
         // If there is a result, return the RSS feed
         if (cursor.moveToNext()) {
-            long id = cursor.getLong(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry._ID));
+            String url = cursor.getString(cursor.getColumnIndexOrThrow(RSSItemDbOperation.ItemEntry.COLUMN_NAME_LINK));
 
             item = new RSSItem()
-                .setId(id)
+                .setLink(url)
             ;
         }
         cursor.close();

@@ -41,7 +41,7 @@ public final class RSSFeedDb {
         ContentValues values = new ContentValues();
         values.put(RSSFeedDbOperation.FeedEntry.COLUMN_NAME_NAME, feedEntry.getName());
         values.put(RSSFeedDbOperation.FeedEntry.COLUMN_NAME_URL, feedEntry.getUrl());
-        values.put(RSSFeedDbOperation.FeedEntry.COLUMN_NAME_LASTUPDATE, System.currentTimeMillis() / 1000);
+        //values.put(RSSFeedDbOperation.FeedEntry.COLUMN_NAME_LASTUPDATE, System.currentTimeMillis() / 1000);
 
         db.update(
             RSSFeedDbOperation.FeedEntry.TABLE_NAME,

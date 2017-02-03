@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
-        //new EntryManager(this).clean();
+        new EntryManager(this).fill();
         this.refreshList();
     }
 

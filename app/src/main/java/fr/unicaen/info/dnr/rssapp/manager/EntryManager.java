@@ -121,7 +121,7 @@ public class EntryManager {
     public RSSItem findItem(RSSItem item) {
         // Find item using his id
         SQLiteDatabase itemDB = new RSSItemDbOpener(this.context).getWritableDatabase();
-        RSSItem resItem = RSSItemDb.getItemById(itemDB, item.getId());
+        RSSItem resItem = RSSItemDb.getItemByLink(itemDB, item.getLink());
         itemDB.close();
         return resItem;
     }
