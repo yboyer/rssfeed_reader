@@ -147,16 +147,15 @@ public class EntryManager {
                         .setMessage(e.getMessage())
                         .setPositiveButton(android.R.string.ok, null)
                         .show();
-                    return;
-                }
+                } else {
+                    Log.d("## EntryManager:add", rssFeed.getUrl() + " have " + items.size() + " items");
 
-                Log.d("## EntryManager:add", rssFeed.getUrl() + " have " + items.size() + " items");
-
-                // Add feed items on database
-                final SQLiteDatabase itemDB = new RSSItemDbOpener(context).getWritableDatabase();
-                for (RSSItem item : items) {
-                    if (findItem(item) == null) {
-                        RSSItemDb.add(itemDB, item.setFeedId(feedId));
+                    // Add feed items on database
+                    final SQLiteDatabase itemDB = new RSSItemDbOpener(context).getWritableDatabase();
+                    for (RSSItem item : items) {
+                        if (findItem(item) == null) {
+                            RSSItemDb.add(itemDB, item.setFeedId(feedId));
+                        }
                     }
                 }
 
