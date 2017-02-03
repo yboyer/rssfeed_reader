@@ -113,7 +113,7 @@ public final class RSSItemDb {
             where, // The values for the WHERE clause
             null, // Rows group
             null, // Row groups filter
-            RSSItemDbOperation.ItemEntry.COLUMN_NAME_PUBDATE + " DESC" // The sort order
+            RSSItemDbOperation.ItemEntry.COLUMN_NAME_PUBDATE + " DESC, " + RSSItemDbOperation.ItemEntry._ID + " ASC" // The sort order
         );
 
         // List of RSS items
