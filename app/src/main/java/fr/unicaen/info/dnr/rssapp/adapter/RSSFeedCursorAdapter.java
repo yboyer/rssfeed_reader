@@ -103,9 +103,9 @@ public class RSSFeedCursorAdapter extends ResourceCursorAdapter {
                                 EntryManager em = new EntryManager(context);
                                 RSSFeed feed = em.getFeed(id);
                                 // Modify feed in DB
-                                //em.update(feed);
+                                em.update(feed);
                                 Toast.makeText(context, R.string.update_success, Toast.LENGTH_SHORT).show();
-                                //do refreshList();
+                                notifyDataSetChanged();
                             }
                         })
                         .setNegativeButton(android.R.string.cancel, null);
