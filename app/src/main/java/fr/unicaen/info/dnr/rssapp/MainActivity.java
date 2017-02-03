@@ -1,5 +1,6 @@
 package fr.unicaen.info.dnr.rssapp;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,10 +23,8 @@ import fr.unicaen.info.dnr.rssapp.manager.EntryManager;
 
 
 public class MainActivity extends AppCompatActivity{
-
     private ListView rssList;
     private AlertDialog addFeedDialog;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +32,7 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
         rssList = (ListView) findViewById(R.id.rssList);
 
+        // Open the RSSListActivity
         rssList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(MainActivity.this, RssItemActivity.class);
@@ -41,8 +41,8 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
+        // Open the modal to delete the item
         rssList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            // setting onItemLongClickListener and passing the position to the function
             @Override
             public boolean onItemLongClick(AdapterView<?> adapter, View v, int position, long id) {
                 removeItemFromList(id);
@@ -50,31 +50,29 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
-        //new EntryManager(this).fill();
-        this.refreshList();
+        refreshList();
     }
 
-    // method to remove list item
-    protected void removeItemFromList(long id) {
-        final long identifiant = id;
-        final MainActivity main = this;
+    /**
+     * Remove an item from the list
+     * @param id The id
+     */
+    protected void removeItemFromList(final long id) {
+        final Context context = this;
 
-        AlertDialog.Builder alert = new AlertDialog.Builder(
-                MainActivity.this);
-
-        alert.setTitle(R.string.delete);
-        alert.setMessage(R.string.ask_delete);
-        alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // remove the feed on database
-                new EntryManager(main).remove(identifiant);
-                Toast.makeText(main, R.string.delete_success, Toast.LENGTH_SHORT).show();
-                refreshList();
-            }
-        });
-        alert.setNegativeButton(android.R.string.no, null);
-        alert.show();
+        new AlertDialog.Builder(this)
+            .setTitle(R.string.delete)
+            .setMessage(R.string.ask_delete)
+            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    new EntryManager(context).remove(id);
+                    Toast.makeText(context, R.string.delete_success, Toast.LENGTH_SHORT).show();
+                    refreshList();
+                }
+            })
+            .setNegativeButton(android.R.string.no, null)
+            .show();
     }
 
     @Override
