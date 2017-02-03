@@ -7,13 +7,13 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 
 public class PreferencesActivity extends AppCompatActivity {
-    final static String PREFERENCE_KEY = "rss_settings";
-    final static String AUTOUPDATE_KEY = "autoupdate";
-    final static boolean AUTOUPDATE_DEFAULT = true;
-    final static String WIFIUPDATE_KEY = "wifiupdate";
-    final static boolean WIFIUPDATE_DEFAULT = true;
-    final static String DATAUPDATE_KEY = "dataupdate";
-    final static boolean DATAUPDATE_DEFAULT = true;
+    public final static String PREFERENCE_KEY = "rss_settings";
+    public final static String AUTOUPDATE_KEY = "autoupdate";
+    public final static boolean AUTOUPDATE_DEFAULT = true;
+    public final static String WIFIUPDATE_KEY = "wifiupdate";
+    public final static boolean WIFIUPDATE_DEFAULT = true;
+    public final static String DATAUPDATE_KEY = "dataupdate";
+    public final static boolean DATAUPDATE_DEFAULT = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,15 +24,7 @@ public class PreferencesActivity extends AppCompatActivity {
 
         final SharedPreferences.Editor editeur = data.edit();
 
-        Switch autoupdateSwitch = (Switch) findViewById(R.id.autoupdate_switch);
-        autoupdateSwitch.setChecked(data.getBoolean(AUTOUPDATE_KEY, AUTOUPDATE_DEFAULT));
-        autoupdateSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                editeur.putBoolean(AUTOUPDATE_KEY, isChecked).apply();
-            }
-        });
-
-        Switch wifiSwitch = (Switch) findViewById(R.id.wifi_switch);
+        final Switch wifiSwitch = (Switch) findViewById(R.id.wifi_switch);
         wifiSwitch.setChecked(data.getBoolean(WIFIUPDATE_KEY, WIFIUPDATE_DEFAULT));
         wifiSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -40,11 +32,24 @@ public class PreferencesActivity extends AppCompatActivity {
             }
         });
 
-        Switch dataSwitch = (Switch) findViewById(R.id.data_switch);
+        final Switch dataSwitch = (Switch) findViewById(R.id.data_switch);
         dataSwitch.setChecked(data.getBoolean(DATAUPDATE_KEY, DATAUPDATE_DEFAULT));
         dataSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 editeur.putBoolean(DATAUPDATE_KEY, isChecked).apply();
+            }
+        });
+
+        Switch autoupdateSwitch = (Switch) findViewById(R.id.autoupdate_switch);
+        boolean autoupdate = data.getBoolean(AUTOUPDATE_KEY, AUTOUPDATE_DEFAULT);
+        autoupdateSwitch.setChecked(autoupdate);
+        wifiSwitch.setEnabled(autoupdate);
+        dataSwitch.setEnabled(autoupdate);
+        autoupdateSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                wifiSwitch.setEnabled(isChecked);
+                dataSwitch.setEnabled(isChecked);
+                editeur.putBoolean(AUTOUPDATE_KEY, isChecked).apply();
             }
         });
     }

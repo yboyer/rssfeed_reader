@@ -50,10 +50,10 @@ public class RssItemActivity extends AppCompatActivity implements SwipeRefreshLa
             @Override
             public void processFinish() {
                 mSwipeRefreshLayout.setRefreshing(false);
+                feed = em.getFeed(feed.getId());
                 refreshList();
             }
         });
-        this.feed = em.getFeed(feed.getId());
     }
 
     /**
@@ -68,7 +68,7 @@ public class RssItemActivity extends AppCompatActivity implements SwipeRefreshLa
 
             element.put("link", items.get(i).getLink());
             // Format the publication date
-            if (items.get(i).getStringPubDate() != "") {
+            if (!items.get(i).getStringPubDate().equals("")) {
                 element.put("date", DateFormat.getDateTimeInstance().format(items.get(i).getPubDate()) + "");
             }
             // Checking the current Android version and parse the HTML code
