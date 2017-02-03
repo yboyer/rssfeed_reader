@@ -45,15 +45,18 @@ public class EntryManager {
         SQLiteDatabase itemDB = new RSSItemDbOpener(this.context).getWritableDatabase();
         itemDB.execSQL(RSSItemDbOperation.SQL_DELETE_ENTRIES);
         itemDB.execSQL(RSSItemDbOperation.SQL_CREATE_ENTRIES);
+        itemDB.close();
 
         SQLiteDatabase feedDB = new RSSFeedDbOpener(this.context).getWritableDatabase();
         feedDB.execSQL(RSSFeedDbOperation.SQL_DELETE_ENTRIES);
         feedDB.execSQL(RSSFeedDbOperation.SQL_CREATE_ENTRIES);
+        feedDB.close();
     }
 
     public void remove(long id) {
         SQLiteDatabase feedDB = new RSSFeedDbOpener(this.context).getWritableDatabase();
         RSSFeedDb.delete(feedDB,id);
+        feedDB.close();
     }
 
     /**
@@ -87,6 +90,9 @@ public class EntryManager {
 
         feedEntry.setItems(RSSItemDb.getItemsByFeedId(itemDB, id));
 
+        feedDB.close();
+        itemDB.close();
+
         return feedEntry;
     }
 
@@ -98,7 +104,9 @@ public class EntryManager {
     private RSSFeed findFeed(RSSFeed feed) {
         // Find feed using his name and url
         SQLiteDatabase feedDB = new RSSFeedDbOpener(this.context).getWritableDatabase();
-        return RSSFeedDb.getFeedByNameOrUrl(feedDB,feed.getUrl(), feed.getName());
+        RSSFeed resFeed = RSSFeedDb.getFeedByNameOrUrl(feedDB,feed.getUrl(), feed.getName());
+        feedDB.close();
+        return resFeed;
     }
 
     /**
@@ -109,7 +117,9 @@ public class EntryManager {
     private RSSItem findItem(RSSItem item) {
         // Find item using his id
         SQLiteDatabase itemDB = new RSSItemDbOpener(this.context).getWritableDatabase();
-        return RSSItemDb.getItemById(itemDB,item.getId());
+        RSSItem resItem = RSSItemDb.getItemById(itemDB, item.getId());
+        itemDB.close();
+        return resItem;
     }
 
     /**
@@ -131,12 +141,18 @@ public class EntryManager {
      */
     public void upsert(final RSSFeed rssFeed, final AsyncResponse callback) {
         // Add the feed item on database
-        final SQLiteDatabase feedDB = new RSSFeedDbOpener(this.context).getWritableDatabase();
-        final long feedId = RSSFeedDb.add(feedDB, rssFeed);
+        long feedId = rssFeed.getId();
+        if (feedId == -1) {
+            final SQLiteDatabase feedDB = new RSSFeedDbOpener(this.context).getWritableDatabase();
+            feedId = RSSFeedDb.add(feedDB, rssFeed);
+            feedDB.close();
+        }
+
         // For the future uses
         final Context context = this.context;
 
         // Async retrieve
+        final long finalFeedId = feedId;
         new RetrieveFeedTask(new RetrieveFeedTask.AsyncResponse(){
             @Override
             public void processFinish(List<RSSItem> items, Exception e){
@@ -154,9 +170,10 @@ public class EntryManager {
                     final SQLiteDatabase itemDB = new RSSItemDbOpener(context).getWritableDatabase();
                     for (RSSItem item : items) {
                         if (findItem(item) == null) {
-                            RSSItemDb.add(itemDB, item.setFeedId(feedId));
+                            RSSItemDb.add(itemDB, item.setFeedId(finalFeedId));
                         }
                     }
+                    itemDB.close();
                 }
 
                 if (callback != null) {
