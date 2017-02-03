@@ -46,12 +46,12 @@ public class RSSFeedCursorAdapter extends ResourceCursorAdapter {
         url.setText(cursor.getString(cursor.getColumnIndex("url")));
 
         final Cursor cursor1 = cursor;
+        long id = cursor.getLong(cursor.getColumnIndex("_id"));
 
         ImageView edit = (ImageView) view.findViewById(R.id.edit);
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "click edit", Toast.LENGTH_SHORT).show();
                 Integer position = (Integer) v.getTag();
                 //ouvrir un formulaire de modification de l'item de la rssList a position
                 //puis valider ces changements en BDD
@@ -85,7 +85,7 @@ public class RSSFeedCursorAdapter extends ResourceCursorAdapter {
 
                 //Create and show the dialog code
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-                alertDialogBuilder.setTitle("Modification");
+                alertDialogBuilder.setTitle(R.string.update);
 
                 // set dialog message
                 alertDialogBuilder.setView(promptView)
@@ -100,9 +100,12 @@ public class RSSFeedCursorAdapter extends ResourceCursorAdapter {
                                     url = "http://" + url;
                                 }
 
+                                EntryManager em = new EntryManager(context);
+                                RSSFeed feed = em.getFeed(id);
                                 // Modify feed in DB
-                                //new EntryManager(context).upsert());
-                                Toast.makeText(context, "Clic valider", Toast.LENGTH_SHORT).show();
+                                //em.update(feed);
+                                Toast.makeText(context, R.string.update_success, Toast.LENGTH_SHORT).show();
+                                //do refreshList();
                             }
                         })
                         .setNegativeButton(android.R.string.cancel, null);
@@ -114,7 +117,7 @@ public class RSSFeedCursorAdapter extends ResourceCursorAdapter {
 
             }
         });
-
+        /*
         ImageView delete = (ImageView) view.findViewById(R.id.delete);
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,7 +127,7 @@ public class RSSFeedCursorAdapter extends ResourceCursorAdapter {
                 //remove l'item de la rssList a position et dans la BDD
                 notifyDataSetChanged();
             }
-        });
+        });*/
         notifyDataSetChanged();
     }
 }

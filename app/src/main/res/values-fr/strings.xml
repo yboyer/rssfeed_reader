@@ -19,4 +19,9 @@
     <string name="data_update">Mise à jour en données mobile</string>
     <string name="wifi_update">Mise à jour en wifi</string>
     <string name="existing_feed">Ce flux RSS existe déjà !</string>
+    <string name="update">Modification</string>
+    <string name="ask_delete">Êtes-vous sur de vouloir supprimer l\'item ?</string>
+    <string name="delete_success">L\'item à été supprimé avec succès</string>
+    <string name="update_success">L\'item à été modifié avec succès</string>
+    <string name="delete">Suppression</string>
 </resources>

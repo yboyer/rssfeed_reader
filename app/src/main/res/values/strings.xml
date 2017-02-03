@@ -19,4 +19,9 @@
     <string name="wifi_update">Update on WiFi network</string>
     <string name="data_update" >Update on data network</string>
     <string name="existing_feed">This RSS feed already exists!</string>
+    <string name="update">Update</string>
+    <string name="ask_delete">Are you sure you want to delete this item ?</string>
+    <string name="delete_success">The item has been successfully deleted</string>
+    <string name="update_success">The item has been successfully updated</string>
+    <string name="delete">Delete</string>
 </resources>

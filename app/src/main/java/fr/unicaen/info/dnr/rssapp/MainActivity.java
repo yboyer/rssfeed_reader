@@ -64,14 +64,14 @@ public class MainActivity extends AppCompatActivity{
         AlertDialog.Builder alert = new AlertDialog.Builder(
                 MainActivity.this);
 
-        alert.setTitle("Supression");
-        alert.setMessage("Êtes-vous sur de vouloir supprimer l'item ?");
+        alert.setTitle(R.string.delete);
+        alert.setMessage(R.string.ask_delete);
         alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // remove the feed on database
                 new EntryManager(main).remove(identifiant);
-                Toast.makeText(main, "L'item à été supprimé", Toast.LENGTH_SHORT).show();
+                Toast.makeText(main, R.string.delete_success, Toast.LENGTH_SHORT).show();
                 refreshList();
             }
         });
