@@ -1,6 +1,7 @@
 package fr.unicaen.info.dnr.rssapp.manager;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AlertDialog;
@@ -75,6 +76,11 @@ public class EntryManager {
         return RSSFeedDb.getFeedsCursor(feedDB);
     }
 
+    public List<RSSFeed> getAllFeeds() {
+        SQLiteDatabase feedDB = new RSSFeedDbOpener(this.context).getReadableDatabase();
+        return RSSFeedDb.getAllFeeds(feedDB);
+    }
+
     /**
      * Get one RSS feed.
      * @param id : The feed id.
@@ -95,7 +101,7 @@ public class EntryManager {
      * @param feed : the RSS feed to search.
      * @return : a RSS feed or null.
      */
-    private RSSFeed findFeed(RSSFeed feed) {
+    public RSSFeed findFeed(RSSFeed feed) {
         // Find feed using his name and url
         SQLiteDatabase feedDB = new RSSFeedDbOpener(this.context).getWritableDatabase();
         return RSSFeedDb.getFeedByNameOrUrl(feedDB,feed.getUrl(), feed.getName());
@@ -106,7 +112,7 @@ public class EntryManager {
      * @param item : the RSS item to search.
      * @return : a RSS item of null.
      */
-    private RSSItem findItem(RSSItem item) {
+    public RSSItem findItem(RSSItem item) {
         // Find item using his id
         SQLiteDatabase itemDB = new RSSItemDbOpener(this.context).getWritableDatabase();
         return RSSItemDb.getItemById(itemDB,item.getId());
@@ -142,24 +148,31 @@ public class EntryManager {
             public void processFinish(List<RSSItem> items, Exception e){
                 if (e != null) {
                     // Display the exception as an error
-                    new AlertDialog.Builder(context)
-                        .setTitle(R.string.error)
-                        .setMessage(e.getMessage())
-                        .setPositiveButton(android.R.string.ok, null)
-                        .show();
-                    return;
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(context)
+                            .setPositiveButton(android.R.string.ok, null)
+                            ;
+                    alertDialog.setTitle(R.string.error);
+                    alertDialog.setMessage(R.string.errorDefaultMsg);
+                    if (e instanceof com.google.code.rome.android.repackaged.com.sun.syndication.io.ParsingFeedException) {
+                        alertDialog.setTitle(R.string.errorParsingTitle);
+                        alertDialog.setMessage(R.string.errorParsingMsg);
+                    } else if (e instanceof java.net.UnknownHostException) {
+                        alertDialog.setTitle(R.string.errorUnknownHostTitle);
+                        alertDialog.setMessage(R.string.errorUnknownHostMsg);
+                    }
+                    alertDialog.show();
                 }
+                else {
+                    Log.d("## EntryManager:add", rssFeed.getUrl() + " have " + items.size() + " items");
 
-                Log.d("## EntryManager:add", rssFeed.getUrl() + " have " + items.size() + " items");
-
-                // Add feed items on database
-                final SQLiteDatabase itemDB = new RSSItemDbOpener(context).getWritableDatabase();
-                for (RSSItem item : items) {
-                    if (findItem(item) == null) {
-                        RSSItemDb.add(itemDB, item.setFeedId(feedId));
+                    // Add feed items on database
+                    final SQLiteDatabase itemDB = new RSSItemDbOpener(context).getWritableDatabase();
+                    for (RSSItem item : items) {
+                        if (findItem(item) == null) {
+                            RSSItemDb.add(itemDB, item.setFeedId(feedId));
+                        }
                     }
                 }
-
                 if (callback != null) {
                     callback.processFinish();
                 }

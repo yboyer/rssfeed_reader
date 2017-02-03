@@ -42,7 +42,7 @@ public class RssItemActivity extends AppCompatActivity implements SwipeRefreshLa
     }
 
     /**
-     * Retrieve the the items and refresh the list
+     * Retrieve items and refresh the list
      */
     public void updateList() {
         mSwipeRefreshLayout.setRefreshing(true);
@@ -85,7 +85,7 @@ public class RssItemActivity extends AppCompatActivity implements SwipeRefreshLa
             adapterList,
             R.layout.details_item_list,
             new String[] {"link", "date", "description"},
-            new int[] {R.id.link, R.id.date, R.id.description }
+            new int[] {R.id.link, R.id.name, R.id.description }
         ));
     }
 

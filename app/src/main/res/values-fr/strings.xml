@@ -19,4 +19,9 @@
     <string name="data_update">Mise à jour en données mobile</string>
     <string name="wifi_update">Mise à jour en wifi</string>
     <string name="existing_feed">Ce flux RSS existe déjà !</string>
+    <string name="errorDefaultMsg">Erreur lors de la récupération du Flux RSS</string>
+    <string name="errorParsingTitle">Impossible de détecter le flux</string>
+    <string name="errorParsingMsg">Impossible de détecter le flux RSS de ce site</string>
+    <string name="errorUnknownHostTitle">Hôte inconnu</string>
+    <string name="errorUnknownHostMsg">Le site rentré n\'existe pas</string>
 </resources>
